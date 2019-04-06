@@ -31,7 +31,7 @@ pub struct ApiKey {
 impl<C: hyper::client::Connect> Configuration<C> {
   pub fn new(client: hyper::client::Client<C>) -> Configuration<C> {
     Configuration {
-      base_path: "http://RIDB_HOST/api/v1".to_owned(),
+      base_path: "https://ridb.recreation.gov/api/v1".to_owned(),
       user_agent: Some("OpenAPI-Generator/1.0.0/rust".to_owned()),
       client: client,
       basic_auth: None,

@@ -17,7 +17,7 @@ Put the package under your project folder and add the following in import:
 
 ## Documentation for API Endpoints
 
-All URIs are relative to *http://RIDB_HOST/api/v1*
+All URIs are relative to *https://ridb.recreation.gov/api/v1*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------

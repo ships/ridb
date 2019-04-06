@@ -6,7 +6,7 @@ info:
     The Recreation Information Database (RIDB) provides data resources to citizens, offering a single point of access to information about recreational opportunities nationwide. The RIDB represents an authoritative source of information and services for millions of visitors to federal lands, historic sites, museums, and other attractions/resources. This initiative integrates multiple Federal channels and sources about recreation opportunities into a one-stop, searchable database of recreational areas nationwide.
   version: 1.0.0
 servers:
-  - url: RIDB_HOST/api/v1
+  - url: https://ridb.recreation.gov/api/v1
     description: RIDB API 1.0
 tags:
   - name: Activities
