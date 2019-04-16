@@ -28,15 +28,15 @@ impl PermitEntrancesApiClient {
 }
 
 pub trait PermitEntrancesApi {
-    fn get_facility_permit_entrance(&self, facility_id: &str, permit_entrance_id: &str) -> Result<::models::PermitEntrance, Error>;
+    fn get_facility_permit_entrance(&self, facility_id: &str, permit_entrance_id: &str) -> Result<Vec<::models::PermitEntrance>, Error>;
     fn get_facility_permit_entrances(&self, facility_id: &str, limit: i32, offset: i32) -> Result<::models::InlineResponse2006, Error>;
-    fn get_permit_entrance(&self, permit_entrance_id: &str) -> Result<::models::PermitEntrance, Error>;
+    fn get_permit_entrance(&self, permit_entrance_id: &str) -> Result<Vec<::models::PermitEntrance>, Error>;
     fn get_permit_entrances(&self, limit: i32, offset: i32) -> Result<::models::InlineResponse2006, Error>;
 }
 
 
 impl PermitEntrancesApi for PermitEntrancesApiClient {
-    fn get_facility_permit_entrance(&self, facility_id: &str, permit_entrance_id: &str) -> Result<::models::PermitEntrance, Error> {
+    fn get_facility_permit_entrance(&self, facility_id: &str, permit_entrance_id: &str) -> Result<Vec<::models::PermitEntrance>, Error> {
         let configuration: &configuration::Configuration = self.configuration.borrow();
         let client = &configuration.client;
 
@@ -110,7 +110,7 @@ impl PermitEntrancesApi for PermitEntrancesApiClient {
         Ok(client.execute(req)?.error_for_status()?.json()?)
     }
 
-    fn get_permit_entrance(&self, permit_entrance_id: &str) -> Result<::models::PermitEntrance, Error> {
+    fn get_permit_entrance(&self, permit_entrance_id: &str) -> Result<Vec<::models::PermitEntrance>, Error> {
         let configuration: &configuration::Configuration = self.configuration.borrow();
         let client = &configuration.client;
 

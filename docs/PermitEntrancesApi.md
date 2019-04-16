@@ -11,7 +11,7 @@ Method | HTTP request | Description
 
 
 # **get_facility_permit_entrance**
-> ::models::PermitEntrance get_facility_permit_entrance(ctx, facility_id, permit_entrance_id)
+> Vec<::models::PermitEntrance> get_facility_permit_entrance(ctx, facility_id, permit_entrance_id)
 retrieve a specific permit entrance by id for a facility
 
 This endpoint retrieves a specific permit entrance for a specific facility.
@@ -26,7 +26,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**::models::PermitEntrance**](Permit Entrance.md)
+[**Vec<::models::PermitEntrance>**](Permit Entrance.md)
 
 ### Authorization
 
@@ -78,7 +78,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **get_permit_entrance**
-> ::models::PermitEntrance get_permit_entrance(ctx, permit_entrance_id)
+> Vec<::models::PermitEntrance> get_permit_entrance(ctx, permit_entrance_id)
 retrieve a specific permit entrance by id
 
 This endpoint retrieves a specific permit entrance.
@@ -92,7 +92,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**::models::PermitEntrance**](Permit Entrance.md)
+[**Vec<::models::PermitEntrance>**](Permit Entrance.md)
 
 ### Authorization
 

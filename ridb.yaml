@@ -1478,7 +1478,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Permit Entrance'
+                type: array
+                items:
+                  $ref: '#/components/schemas/Permit Entrance'
   /facilities/{facilityId}/permitentrances:
     get:
       tags: *PermitEntranceTags
