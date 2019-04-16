@@ -21,67 +21,67 @@ All URIs are relative to *https://ridb.recreation.gov/api/v1*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
-*ActivitiesApi* | [**get_activities**](docs/ActivitiesApi.md#get_activities) | **Get** /activities | retrieve all activities
-*AttributesApi* | [**get_campsite_attributes**](docs/AttributesApi.md#get_campsite_attributes) | **Get** /campsites/{campsiteId}/attributes | retrieve all attributes for a campsite
-*AttributesApi* | [**get_tour_attributes**](docs/AttributesApi.md#get_tour_attributes) | **Get** /tours/{tourId}/attributes | retrieve all attributes for a tour
-*CampsitesApi* | [**get_campsites**](docs/CampsitesApi.md#get_campsites) | **Get** /campsites | retrieve all campsites
-*DefaultApi* | [**get_activity**](docs/DefaultApi.md#get_activity) | **Get** /activities/{activityId} | retrieve a specific activity by id
-*DefaultApi* | [**get_all_facility_media**](docs/DefaultApi.md#get_all_facility_media) | **Get** /facilities/{facilityId}/media | retrieve all media for a facility
-*DefaultApi* | [**get_all_rec_area_media**](docs/DefaultApi.md#get_all_rec_area_media) | **Get** /recareas/{recAreaId}/media | retrieve all media for a recreation area
-*DefaultApi* | [**get_campsite**](docs/DefaultApi.md#get_campsite) | **Get** /campsites/{campsiteId} | retrieve a specific campsite by id
-*DefaultApi* | [**get_event**](docs/DefaultApi.md#get_event) | **Get** /events/{eventId} | retrieve a specific event by id
-*DefaultApi* | [**get_facility**](docs/DefaultApi.md#get_facility) | **Get** /facilities/{facilityId} | retrieve a specific facility by id
-*DefaultApi* | [**get_facility_activities**](docs/DefaultApi.md#get_facility_activities) | **Get** /facilities/{facilityId}/activities | retrieve all activities for a facility
-*DefaultApi* | [**get_facility_activity**](docs/DefaultApi.md#get_facility_activity) | **Get** /facilities/{facilityId}/activities/{activityId} | retrieve a specific activity by id for a facility
-*DefaultApi* | [**get_facility_address**](docs/DefaultApi.md#get_facility_address) | **Get** /facilityaddresses/{facilityAddressId} | retrieve a specific facility address by id
-*DefaultApi* | [**get_facility_campsite**](docs/DefaultApi.md#get_facility_campsite) | **Get** /facilities/{facilityId}/campsites/{campsiteId} | retrieve a specific campsite by id for a facility
-*DefaultApi* | [**get_facility_campsites**](docs/DefaultApi.md#get_facility_campsites) | **Get** /facilities/{facilityId}/campsites | retrieve all campsites for a facility
-*DefaultApi* | [**get_facility_event**](docs/DefaultApi.md#get_facility_event) | **Get** /facilities/{facilityId}/events/{eventId} | retrieve a specific event by id for a facility
-*DefaultApi* | [**get_facility_events**](docs/DefaultApi.md#get_facility_events) | **Get** /facilities/{facilityId}/events | retrieve all events for a facility
-*DefaultApi* | [**get_facility_facility_address**](docs/DefaultApi.md#get_facility_facility_address) | **Get** /facilities/{facilityId}/facilityaddresses/{facilityAddressId} | retrieve a specific facility address by id for a facility
-*DefaultApi* | [**get_facility_facility_addresses**](docs/DefaultApi.md#get_facility_facility_addresses) | **Get** /facilities/{facilityId}/facilityaddresses | retrieve all facility addresses for a facility
-*DefaultApi* | [**get_facility_link**](docs/DefaultApi.md#get_facility_link) | **Get** /facilities/{facilityId}/links/{linkId} | retrieve a specific link by id for a facility
-*DefaultApi* | [**get_facility_links**](docs/DefaultApi.md#get_facility_links) | **Get** /facilities/{facilityId}/links | retrieve all links for a facility
-*DefaultApi* | [**get_facility_media**](docs/DefaultApi.md#get_facility_media) | **Get** /facilities/{facilityId}/media/{mediaId} | retrieve a specific media by id for a facility
-*DefaultApi* | [**get_facility_permit_entrance**](docs/DefaultApi.md#get_facility_permit_entrance) | **Get** /facilities/{facilityId}/permitentrances/{permitEntranceId} | retrieve a specific permit entrance by id for a facility
-*DefaultApi* | [**get_facility_permit_entrances**](docs/DefaultApi.md#get_facility_permit_entrances) | **Get** /facilities/{facilityId}/permitentrances | retrieve all permit entrances for a facility
-*DefaultApi* | [**get_facility_tour**](docs/DefaultApi.md#get_facility_tour) | **Get** /facilities/{facilityId}/tours/{tourId} | retrieve a specific tour by id for a facility
-*DefaultApi* | [**get_facility_tours**](docs/DefaultApi.md#get_facility_tours) | **Get** /facilities/{facilityId}/tours | retrieve all tours for a facility
-*DefaultApi* | [**get_link**](docs/DefaultApi.md#get_link) | **Get** /links/{linkId} | retrieve a specific link by id
-*DefaultApi* | [**get_media**](docs/DefaultApi.md#get_media) | **Get** /media/{mediaId} | retrieve a specific media by id
-*DefaultApi* | [**get_organization**](docs/DefaultApi.md#get_organization) | **Get** /organizations/{orgId} | retrieve a specific organization by id
-*DefaultApi* | [**get_organization_facility**](docs/DefaultApi.md#get_organization_facility) | **Get** /organizations/{orgId}/facilities/{facilityId} | retrieve a specific facility by id for an organization
-*DefaultApi* | [**get_organization_rec_area**](docs/DefaultApi.md#get_organization_rec_area) | **Get** /organizations/{orgId}/recareas/{recAreaId} | retrieve a specific recreation area by id for an organization
-*DefaultApi* | [**get_organization_rec_areas**](docs/DefaultApi.md#get_organization_rec_areas) | **Get** /organizations/{orgId}/recareas | retrieve all recreation areas for an organization
-*DefaultApi* | [**get_permit_entrance**](docs/DefaultApi.md#get_permit_entrance) | **Get** /permitentrances/{permitentranceId} | retrieve a specific permit entrance by id
-*DefaultApi* | [**get_permit_entrance_attributes**](docs/DefaultApi.md#get_permit_entrance_attributes) | **Get** /permitentrances/{permitEntranceId}/attributes | retrieve all attributes for a permit entrance
-*DefaultApi* | [**get_rec_area**](docs/DefaultApi.md#get_rec_area) | **Get** /recareas/{recAreaId} | retrieve a specific recreation area by id
-*DefaultApi* | [**get_rec_area_activities**](docs/DefaultApi.md#get_rec_area_activities) | **Get** /recareas/{recAreaId}/activities | retrieve all activities for a recreation area
-*DefaultApi* | [**get_rec_area_activity**](docs/DefaultApi.md#get_rec_area_activity) | **Get** /recareas/{recAreaId}/activities/{activityId} | retrieve a specific activity by id for a recreation area
-*DefaultApi* | [**get_rec_area_address**](docs/DefaultApi.md#get_rec_area_address) | **Get** /recareaaddresses/{recAreaAddressId} | retrieve a specific recreation area address by id
-*DefaultApi* | [**get_rec_area_event**](docs/DefaultApi.md#get_rec_area_event) | **Get** /recareas/{recAreaId}/events/{eventId} | retrieve a specific event by id for a recreation area
-*DefaultApi* | [**get_rec_area_events**](docs/DefaultApi.md#get_rec_area_events) | **Get** /recareas/{recAreaId}/events | retrieve all events for a recreation area
-*DefaultApi* | [**get_rec_area_facility**](docs/DefaultApi.md#get_rec_area_facility) | **Get** /recareas/{recAreaId}/facilities/{facilityId} | retrieve a specific facility by id for a recreation area
-*DefaultApi* | [**get_rec_area_link**](docs/DefaultApi.md#get_rec_area_link) | **Get** /recareas/{recAreaId}/links/{linkId} | retrieve a specific link by id for a recreation area
-*DefaultApi* | [**get_rec_area_links**](docs/DefaultApi.md#get_rec_area_links) | **Get** /recareas/{recAreaId}/links | retrieve all links for a recreation area
-*DefaultApi* | [**get_rec_area_media**](docs/DefaultApi.md#get_rec_area_media) | **Get** /recareas/{recAreaId}/media/{mediaId} | retrieve a specific media by id for a recreation area
-*DefaultApi* | [**get_rec_area_rec_area_address**](docs/DefaultApi.md#get_rec_area_rec_area_address) | **Get** /recareas/{recAreaId}/recareaaddresses/{recAreaAddressId} | retrieve a specific recreation area address by id for a recreation area
-*DefaultApi* | [**get_rec_area_rec_area_addresses**](docs/DefaultApi.md#get_rec_area_rec_area_addresses) | **Get** /recareas/{recAreaId}/recareaaddresses | retrieve all recreation area addresses for a recreation area
-*DefaultApi* | [**get_tour**](docs/DefaultApi.md#get_tour) | **Get** /tours/{tourId} | retrieve a specific tour by id
-*EventsApi* | [**get_events**](docs/EventsApi.md#get_events) | **Get** /events | retrieve all events
-*FacilitiesApi* | [**get_facilities**](docs/FacilitiesApi.md#get_facilities) | **Get** /facilities | retrieve all facilities
-*FacilitiesApi* | [**get_organization_facilities**](docs/FacilitiesApi.md#get_organization_facilities) | **Get** /organizations/{orgId}/facilities | retrieve all facilities for an organization
-*FacilitiesApi* | [**get_rec_area_facilities**](docs/FacilitiesApi.md#get_rec_area_facilities) | **Get** /recareas/{recAreaId}/facilities | retrieve all facilities for a recreation area
-*FacilityAddressesApi* | [**get_facility_addresses**](docs/FacilityAddressesApi.md#get_facility_addresses) | **Get** /facilityaddresses | retrieve all facility addresses
-*LinksApi* | [**get_links**](docs/LinksApi.md#get_links) | **Get** /links | retrieve all links
-*MediaApi* | [**get_all_media**](docs/MediaApi.md#get_all_media) | **Get** /media | retrieve all media
-*OrganizationsApi* | [**get_organizations**](docs/OrganizationsApi.md#get_organizations) | **Get** /organizations | retrieve all organizations
-*PermitEntrancesApi* | [**get_permit_entrances**](docs/PermitEntrancesApi.md#get_permit_entrances) | **Get** /permitentrances | retrieve all permit entrances
-*RecreationAreaAddressesApi* | [**get_rec_area_addresses**](docs/RecreationAreaAddressesApi.md#get_rec_area_addresses) | **Get** /recareaaddresses | retrieve all recreation area addresses
-*RecreationAreasApi* | [**get_rec_areas**](docs/RecreationAreasApi.md#get_rec_areas) | **Get** /recareas | retrieve all recreation areas
-*ToursApi* | [**get_tours**](docs/ToursApi.md#get_tours) | **Get** /tours | retrieve all tours
-*ZonesApi* | [**get_permit_entrance_zone**](docs/ZonesApi.md#get_permit_entrance_zone) | **Get** /permitentrances/{permitEntranceId}/zones/{zoneId} | retrieve a zone for a permit entrance
-*ZonesApi* | [**get_permit_entrance_zones**](docs/ZonesApi.md#get_permit_entrance_zones) | **Get** /permitentrances/{permitEntranceId}/zones | retrieve all zones for a permit entrance
+*ActivitiesApi* | [**get_activities**](docs/ActivitiesApi.md#get_activities) | **get** /activities | retrieve all activities
+*AttributesApi* | [**get_campsite_attributes**](docs/AttributesApi.md#get_campsite_attributes) | **get** /campsites/{campsiteId}/attributes | retrieve all attributes for a campsite
+*AttributesApi* | [**get_tour_attributes**](docs/AttributesApi.md#get_tour_attributes) | **get** /tours/{tourId}/attributes | retrieve all attributes for a tour
+*CampsitesApi* | [**get_campsites**](docs/CampsitesApi.md#get_campsites) | **get** /campsites | retrieve all campsites
+*DefaultApi* | [**get_activity**](docs/DefaultApi.md#get_activity) | **get** /activities/{activityId} | retrieve a specific activity by id
+*DefaultApi* | [**get_all_facility_media**](docs/DefaultApi.md#get_all_facility_media) | **get** /facilities/{facilityId}/media | retrieve all media for a facility
+*DefaultApi* | [**get_all_rec_area_media**](docs/DefaultApi.md#get_all_rec_area_media) | **get** /recareas/{recAreaId}/media | retrieve all media for a recreation area
+*DefaultApi* | [**get_campsite**](docs/DefaultApi.md#get_campsite) | **get** /campsites/{campsiteId} | retrieve a specific campsite by id
+*DefaultApi* | [**get_event**](docs/DefaultApi.md#get_event) | **get** /events/{eventId} | retrieve a specific event by id
+*DefaultApi* | [**get_facility**](docs/DefaultApi.md#get_facility) | **get** /facilities/{facilityId} | retrieve a specific facility by id
+*DefaultApi* | [**get_facility_activities**](docs/DefaultApi.md#get_facility_activities) | **get** /facilities/{facilityId}/activities | retrieve all activities for a facility
+*DefaultApi* | [**get_facility_activity**](docs/DefaultApi.md#get_facility_activity) | **get** /facilities/{facilityId}/activities/{activityId} | retrieve a specific activity by id for a facility
+*DefaultApi* | [**get_facility_address**](docs/DefaultApi.md#get_facility_address) | **get** /facilityaddresses/{facilityAddressId} | retrieve a specific facility address by id
+*DefaultApi* | [**get_facility_campsite**](docs/DefaultApi.md#get_facility_campsite) | **get** /facilities/{facilityId}/campsites/{campsiteId} | retrieve a specific campsite by id for a facility
+*DefaultApi* | [**get_facility_campsites**](docs/DefaultApi.md#get_facility_campsites) | **get** /facilities/{facilityId}/campsites | retrieve all campsites for a facility
+*DefaultApi* | [**get_facility_event**](docs/DefaultApi.md#get_facility_event) | **get** /facilities/{facilityId}/events/{eventId} | retrieve a specific event by id for a facility
+*DefaultApi* | [**get_facility_events**](docs/DefaultApi.md#get_facility_events) | **get** /facilities/{facilityId}/events | retrieve all events for a facility
+*DefaultApi* | [**get_facility_facility_address**](docs/DefaultApi.md#get_facility_facility_address) | **get** /facilities/{facilityId}/facilityaddresses/{facilityAddressId} | retrieve a specific facility address by id for a facility
+*DefaultApi* | [**get_facility_facility_addresses**](docs/DefaultApi.md#get_facility_facility_addresses) | **get** /facilities/{facilityId}/facilityaddresses | retrieve all facility addresses for a facility
+*DefaultApi* | [**get_facility_link**](docs/DefaultApi.md#get_facility_link) | **get** /facilities/{facilityId}/links/{linkId} | retrieve a specific link by id for a facility
+*DefaultApi* | [**get_facility_links**](docs/DefaultApi.md#get_facility_links) | **get** /facilities/{facilityId}/links | retrieve all links for a facility
+*DefaultApi* | [**get_facility_media**](docs/DefaultApi.md#get_facility_media) | **get** /facilities/{facilityId}/media/{mediaId} | retrieve a specific media by id for a facility
+*DefaultApi* | [**get_facility_permit_entrance**](docs/DefaultApi.md#get_facility_permit_entrance) | **get** /facilities/{facilityId}/permitentrances/{permitEntranceId} | retrieve a specific permit entrance by id for a facility
+*DefaultApi* | [**get_facility_permit_entrances**](docs/DefaultApi.md#get_facility_permit_entrances) | **get** /facilities/{facilityId}/permitentrances | retrieve all permit entrances for a facility
+*DefaultApi* | [**get_facility_tour**](docs/DefaultApi.md#get_facility_tour) | **get** /facilities/{facilityId}/tours/{tourId} | retrieve a specific tour by id for a facility
+*DefaultApi* | [**get_facility_tours**](docs/DefaultApi.md#get_facility_tours) | **get** /facilities/{facilityId}/tours | retrieve all tours for a facility
+*DefaultApi* | [**get_link**](docs/DefaultApi.md#get_link) | **get** /links/{linkId} | retrieve a specific link by id
+*DefaultApi* | [**get_media**](docs/DefaultApi.md#get_media) | **get** /media/{mediaId} | retrieve a specific media by id
+*DefaultApi* | [**get_organization**](docs/DefaultApi.md#get_organization) | **get** /organizations/{orgId} | retrieve a specific organization by id
+*DefaultApi* | [**get_organization_facility**](docs/DefaultApi.md#get_organization_facility) | **get** /organizations/{orgId}/facilities/{facilityId} | retrieve a specific facility by id for an organization
+*DefaultApi* | [**get_organization_rec_area**](docs/DefaultApi.md#get_organization_rec_area) | **get** /organizations/{orgId}/recareas/{recAreaId} | retrieve a specific recreation area by id for an organization
+*DefaultApi* | [**get_organization_rec_areas**](docs/DefaultApi.md#get_organization_rec_areas) | **get** /organizations/{orgId}/recareas | retrieve all recreation areas for an organization
+*DefaultApi* | [**get_permit_entrance**](docs/DefaultApi.md#get_permit_entrance) | **get** /permitentrances/{permitentranceId} | retrieve a specific permit entrance by id
+*DefaultApi* | [**get_permit_entrance_attributes**](docs/DefaultApi.md#get_permit_entrance_attributes) | **get** /permitentrances/{permitEntranceId}/attributes | retrieve all attributes for a permit entrance
+*DefaultApi* | [**get_rec_area**](docs/DefaultApi.md#get_rec_area) | **get** /recareas/{recAreaId} | retrieve a specific recreation area by id
+*DefaultApi* | [**get_rec_area_activities**](docs/DefaultApi.md#get_rec_area_activities) | **get** /recareas/{recAreaId}/activities | retrieve all activities for a recreation area
+*DefaultApi* | [**get_rec_area_activity**](docs/DefaultApi.md#get_rec_area_activity) | **get** /recareas/{recAreaId}/activities/{activityId} | retrieve a specific activity by id for a recreation area
+*DefaultApi* | [**get_rec_area_address**](docs/DefaultApi.md#get_rec_area_address) | **get** /recareaaddresses/{recAreaAddressId} | retrieve a specific recreation area address by id
+*DefaultApi* | [**get_rec_area_event**](docs/DefaultApi.md#get_rec_area_event) | **get** /recareas/{recAreaId}/events/{eventId} | retrieve a specific event by id for a recreation area
+*DefaultApi* | [**get_rec_area_events**](docs/DefaultApi.md#get_rec_area_events) | **get** /recareas/{recAreaId}/events | retrieve all events for a recreation area
+*DefaultApi* | [**get_rec_area_facility**](docs/DefaultApi.md#get_rec_area_facility) | **get** /recareas/{recAreaId}/facilities/{facilityId} | retrieve a specific facility by id for a recreation area
+*DefaultApi* | [**get_rec_area_link**](docs/DefaultApi.md#get_rec_area_link) | **get** /recareas/{recAreaId}/links/{linkId} | retrieve a specific link by id for a recreation area
+*DefaultApi* | [**get_rec_area_links**](docs/DefaultApi.md#get_rec_area_links) | **get** /recareas/{recAreaId}/links | retrieve all links for a recreation area
+*DefaultApi* | [**get_rec_area_media**](docs/DefaultApi.md#get_rec_area_media) | **get** /recareas/{recAreaId}/media/{mediaId} | retrieve a specific media by id for a recreation area
+*DefaultApi* | [**get_rec_area_rec_area_address**](docs/DefaultApi.md#get_rec_area_rec_area_address) | **get** /recareas/{recAreaId}/recareaaddresses/{recAreaAddressId} | retrieve a specific recreation area address by id for a recreation area
+*DefaultApi* | [**get_rec_area_rec_area_addresses**](docs/DefaultApi.md#get_rec_area_rec_area_addresses) | **get** /recareas/{recAreaId}/recareaaddresses | retrieve all recreation area addresses for a recreation area
+*DefaultApi* | [**get_tour**](docs/DefaultApi.md#get_tour) | **get** /tours/{tourId} | retrieve a specific tour by id
+*EventsApi* | [**get_events**](docs/EventsApi.md#get_events) | **get** /events | retrieve all events
+*FacilitiesApi* | [**get_facilities**](docs/FacilitiesApi.md#get_facilities) | **get** /facilities | retrieve all facilities
+*FacilitiesApi* | [**get_organization_facilities**](docs/FacilitiesApi.md#get_organization_facilities) | **get** /organizations/{orgId}/facilities | retrieve all facilities for an organization
+*FacilitiesApi* | [**get_rec_area_facilities**](docs/FacilitiesApi.md#get_rec_area_facilities) | **get** /recareas/{recAreaId}/facilities | retrieve all facilities for a recreation area
+*FacilityAddressesApi* | [**get_facility_addresses**](docs/FacilityAddressesApi.md#get_facility_addresses) | **get** /facilityaddresses | retrieve all facility addresses
+*LinksApi* | [**get_links**](docs/LinksApi.md#get_links) | **get** /links | retrieve all links
+*MediaApi* | [**get_all_media**](docs/MediaApi.md#get_all_media) | **get** /media | retrieve all media
+*OrganizationsApi* | [**get_organizations**](docs/OrganizationsApi.md#get_organizations) | **get** /organizations | retrieve all organizations
+*PermitEntrancesApi* | [**get_permit_entrances**](docs/PermitEntrancesApi.md#get_permit_entrances) | **get** /permitentrances | retrieve all permit entrances
+*RecreationAreaAddressesApi* | [**get_rec_area_addresses**](docs/RecreationAreaAddressesApi.md#get_rec_area_addresses) | **get** /recareaaddresses | retrieve all recreation area addresses
+*RecreationAreasApi* | [**get_rec_areas**](docs/RecreationAreasApi.md#get_rec_areas) | **get** /recareas | retrieve all recreation areas
+*ToursApi* | [**get_tours**](docs/ToursApi.md#get_tours) | **get** /tours | retrieve all tours
+*ZonesApi* | [**get_permit_entrance_zone**](docs/ZonesApi.md#get_permit_entrance_zone) | **get** /permitentrances/{permitEntranceId}/zones/{zoneId} | retrieve a zone for a permit entrance
+*ZonesApi* | [**get_permit_entrance_zones**](docs/ZonesApi.md#get_permit_entrance_zones) | **get** /permitentrances/{permitEntranceId}/zones | retrieve all zones for a permit entrance
 
 
 ## Documentation For Models

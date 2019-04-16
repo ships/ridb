@@ -4,7 +4,7 @@ All URIs are relative to *https://ridb.recreation.gov/api/v1*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**get_links**](LinksApi.md#get_links) | **Get** /links | retrieve all links
+[**get_links**](LinksApi.md#get_links) | **get** /links | retrieve all links
 
 
 # **get_links**

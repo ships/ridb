@@ -8,5 +8,6 @@ openapi-generator generate \
   -o "$this_dir" \
   -g rust \
   -D packageName=ridb-client \
+  --library=reqwest \
   $@
 

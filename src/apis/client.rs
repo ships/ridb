@@ -1,10 +1,9 @@
 use std::rc::Rc;
 
-use hyper;
 use super::configuration::Configuration;
 
-pub struct APIClient<C: hyper::client::Connect> {
-  configuration: Rc<Configuration<C>>,
+pub struct APIClient {
+  configuration: Rc<Configuration>,
   activities_api: Box<::apis::ActivitiesApi>,
   attributes_api: Box<::apis::AttributesApi>,
   campsites_api: Box<::apis::CampsitesApi>,
@@ -22,8 +21,8 @@ pub struct APIClient<C: hyper::client::Connect> {
   zones_api: Box<::apis::ZonesApi>,
 }
 
-impl<C: hyper::client::Connect> APIClient<C> {
-  pub fn new(configuration: Configuration<C>) -> APIClient<C> {
+impl APIClient {
+  pub fn new(configuration: Configuration) -> APIClient {
     let rc = Rc::new(configuration);
 
     APIClient {

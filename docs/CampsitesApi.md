@@ -4,7 +4,7 @@ All URIs are relative to *https://ridb.recreation.gov/api/v1*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**get_campsites**](CampsitesApi.md#get_campsites) | **Get** /campsites | retrieve all campsites
+[**get_campsites**](CampsitesApi.md#get_campsites) | **get** /campsites | retrieve all campsites
 
 
 # **get_campsites**

@@ -11,19 +11,16 @@
 use std::rc::Rc;
 use std::borrow::Borrow;
 
-use hyper;
-use serde_json;
-use futures::Future;
+use reqwest;
 
 use super::{Error, configuration};
-use super::request as __internal_request;
 
-pub struct DefaultApiClient<C: hyper::client::Connect> {
-    configuration: Rc<configuration::Configuration<C>>,
+pub struct DefaultApiClient {
+    configuration: Rc<configuration::Configuration>,
 }
 
-impl<C: hyper::client::Connect> DefaultApiClient<C> {
-    pub fn new(configuration: Rc<configuration::Configuration<C>>) -> DefaultApiClient<C> {
+impl DefaultApiClient {
+    pub fn new(configuration: Rc<configuration::Configuration>) -> DefaultApiClient {
         DefaultApiClient {
             configuration: configuration,
         }
@@ -31,524 +28,1630 @@ impl<C: hyper::client::Connect> DefaultApiClient<C> {
 }
 
 pub trait DefaultApi {
-    fn get_activity(&self, activity_id: &str) -> Box<Future<Item = ::models::Activity, Error = Error<serde_json::Value>>>;
-    fn get_all_facility_media(&self, ) -> Box<Future<Item = (), Error = Error<serde_json::Value>>>;
-    fn get_all_rec_area_media(&self, ) -> Box<Future<Item = (), Error = Error<serde_json::Value>>>;
-    fn get_campsite(&self, campsite_id: &str) -> Box<Future<Item = ::models::Campsite, Error = Error<serde_json::Value>>>;
-    fn get_event(&self, event_id: &str) -> Box<Future<Item = ::models::Event, Error = Error<serde_json::Value>>>;
-    fn get_facility(&self, facility_id: &str) -> Box<Future<Item = ::models::Facility, Error = Error<serde_json::Value>>>;
-    fn get_facility_activities(&self, ) -> Box<Future<Item = (), Error = Error<serde_json::Value>>>;
-    fn get_facility_activity(&self, ) -> Box<Future<Item = (), Error = Error<serde_json::Value>>>;
-    fn get_facility_address(&self, facility_address_id: &str) -> Box<Future<Item = ::models::FacilityAddress, Error = Error<serde_json::Value>>>;
-    fn get_facility_campsite(&self, ) -> Box<Future<Item = (), Error = Error<serde_json::Value>>>;
-    fn get_facility_campsites(&self, ) -> Box<Future<Item = (), Error = Error<serde_json::Value>>>;
-    fn get_facility_event(&self, ) -> Box<Future<Item = (), Error = Error<serde_json::Value>>>;
-    fn get_facility_events(&self, ) -> Box<Future<Item = (), Error = Error<serde_json::Value>>>;
-    fn get_facility_facility_address(&self, ) -> Box<Future<Item = (), Error = Error<serde_json::Value>>>;
-    fn get_facility_facility_addresses(&self, ) -> Box<Future<Item = (), Error = Error<serde_json::Value>>>;
-    fn get_facility_link(&self, ) -> Box<Future<Item = (), Error = Error<serde_json::Value>>>;
-    fn get_facility_links(&self, ) -> Box<Future<Item = (), Error = Error<serde_json::Value>>>;
-    fn get_facility_media(&self, ) -> Box<Future<Item = (), Error = Error<serde_json::Value>>>;
-    fn get_facility_permit_entrance(&self, ) -> Box<Future<Item = (), Error = Error<serde_json::Value>>>;
-    fn get_facility_permit_entrances(&self, ) -> Box<Future<Item = (), Error = Error<serde_json::Value>>>;
-    fn get_facility_tour(&self, ) -> Box<Future<Item = (), Error = Error<serde_json::Value>>>;
-    fn get_facility_tours(&self, ) -> Box<Future<Item = (), Error = Error<serde_json::Value>>>;
-    fn get_link(&self, link_id: &str) -> Box<Future<Item = ::models::Link, Error = Error<serde_json::Value>>>;
-    fn get_media(&self, media_id: &str) -> Box<Future<Item = ::models::Media, Error = Error<serde_json::Value>>>;
-    fn get_organization(&self, org_id: &str) -> Box<Future<Item = Vec<::models::Organization>, Error = Error<serde_json::Value>>>;
-    fn get_organization_facility(&self, ) -> Box<Future<Item = (), Error = Error<serde_json::Value>>>;
-    fn get_organization_rec_area(&self, ) -> Box<Future<Item = (), Error = Error<serde_json::Value>>>;
-    fn get_organization_rec_areas(&self, ) -> Box<Future<Item = (), Error = Error<serde_json::Value>>>;
-    fn get_permit_entrance(&self, permit_entrance_id: &str) -> Box<Future<Item = ::models::PermitEntrance, Error = Error<serde_json::Value>>>;
-    fn get_permit_entrance_attributes(&self, ) -> Box<Future<Item = (), Error = Error<serde_json::Value>>>;
-    fn get_rec_area(&self, rec_area_id: &str) -> Box<Future<Item = ::models::RecreationArea, Error = Error<serde_json::Value>>>;
-    fn get_rec_area_activities(&self, ) -> Box<Future<Item = (), Error = Error<serde_json::Value>>>;
-    fn get_rec_area_activity(&self, ) -> Box<Future<Item = (), Error = Error<serde_json::Value>>>;
-    fn get_rec_area_address(&self, rec_area_address_id: &str) -> Box<Future<Item = ::models::RecreationAreaAddress, Error = Error<serde_json::Value>>>;
-    fn get_rec_area_event(&self, ) -> Box<Future<Item = (), Error = Error<serde_json::Value>>>;
-    fn get_rec_area_events(&self, ) -> Box<Future<Item = (), Error = Error<serde_json::Value>>>;
-    fn get_rec_area_facility(&self, ) -> Box<Future<Item = (), Error = Error<serde_json::Value>>>;
-    fn get_rec_area_link(&self, ) -> Box<Future<Item = (), Error = Error<serde_json::Value>>>;
-    fn get_rec_area_links(&self, ) -> Box<Future<Item = (), Error = Error<serde_json::Value>>>;
-    fn get_rec_area_media(&self, ) -> Box<Future<Item = (), Error = Error<serde_json::Value>>>;
-    fn get_rec_area_rec_area_address(&self, ) -> Box<Future<Item = (), Error = Error<serde_json::Value>>>;
-    fn get_rec_area_rec_area_addresses(&self, ) -> Box<Future<Item = (), Error = Error<serde_json::Value>>>;
-    fn get_tour(&self, tour_id: &str) -> Box<Future<Item = ::models::Tour, Error = Error<serde_json::Value>>>;
+    fn get_activity(&self, activity_id: &str) -> Result<::models::Activity, Error>;
+    fn get_all_facility_media(&self, ) -> Result<(), Error>;
+    fn get_all_rec_area_media(&self, ) -> Result<(), Error>;
+    fn get_campsite(&self, campsite_id: &str) -> Result<::models::Campsite, Error>;
+    fn get_event(&self, event_id: &str) -> Result<::models::Event, Error>;
+    fn get_facility(&self, facility_id: &str) -> Result<::models::Facility, Error>;
+    fn get_facility_activities(&self, ) -> Result<(), Error>;
+    fn get_facility_activity(&self, ) -> Result<(), Error>;
+    fn get_facility_address(&self, facility_address_id: &str) -> Result<::models::FacilityAddress, Error>;
+    fn get_facility_campsite(&self, ) -> Result<(), Error>;
+    fn get_facility_campsites(&self, ) -> Result<(), Error>;
+    fn get_facility_event(&self, ) -> Result<(), Error>;
+    fn get_facility_events(&self, ) -> Result<(), Error>;
+    fn get_facility_facility_address(&self, ) -> Result<(), Error>;
+    fn get_facility_facility_addresses(&self, ) -> Result<(), Error>;
+    fn get_facility_link(&self, ) -> Result<(), Error>;
+    fn get_facility_links(&self, ) -> Result<(), Error>;
+    fn get_facility_media(&self, ) -> Result<(), Error>;
+    fn get_facility_permit_entrance(&self, ) -> Result<(), Error>;
+    fn get_facility_permit_entrances(&self, ) -> Result<(), Error>;
+    fn get_facility_tour(&self, ) -> Result<(), Error>;
+    fn get_facility_tours(&self, ) -> Result<(), Error>;
+    fn get_link(&self, link_id: &str) -> Result<::models::Link, Error>;
+    fn get_media(&self, media_id: &str) -> Result<::models::Media, Error>;
+    fn get_organization(&self, org_id: &str) -> Result<Vec<::models::Organization>, Error>;
+    fn get_organization_facility(&self, ) -> Result<(), Error>;
+    fn get_organization_rec_area(&self, ) -> Result<(), Error>;
+    fn get_organization_rec_areas(&self, ) -> Result<(), Error>;
+    fn get_permit_entrance(&self, permit_entrance_id: &str) -> Result<::models::PermitEntrance, Error>;
+    fn get_permit_entrance_attributes(&self, ) -> Result<(), Error>;
+    fn get_rec_area(&self, rec_area_id: &str) -> Result<::models::RecreationArea, Error>;
+    fn get_rec_area_activities(&self, ) -> Result<(), Error>;
+    fn get_rec_area_activity(&self, ) -> Result<(), Error>;
+    fn get_rec_area_address(&self, rec_area_address_id: &str) -> Result<::models::RecreationAreaAddress, Error>;
+    fn get_rec_area_event(&self, ) -> Result<(), Error>;
+    fn get_rec_area_events(&self, ) -> Result<(), Error>;
+    fn get_rec_area_facility(&self, ) -> Result<(), Error>;
+    fn get_rec_area_link(&self, ) -> Result<(), Error>;
+    fn get_rec_area_links(&self, ) -> Result<(), Error>;
+    fn get_rec_area_media(&self, ) -> Result<(), Error>;
+    fn get_rec_area_rec_area_address(&self, ) -> Result<(), Error>;
+    fn get_rec_area_rec_area_addresses(&self, ) -> Result<(), Error>;
+    fn get_tour(&self, tour_id: &str) -> Result<::models::Tour, Error>;
 }
 
 
-impl<C: hyper::client::Connect>DefaultApi for DefaultApiClient<C> {
-    fn get_activity(&self, activity_id: &str) -> Box<Future<Item = ::models::Activity, Error = Error<serde_json::Value>>> {
-        __internal_request::Request::new(hyper::Method::Get, "/activities/{activityId}".to_string())
-            .with_auth(__internal_request::Auth::ApiKey(__internal_request::ApiKey{
-                in_header: true,
-                in_query: false,
-                param_name: "apikey".to_owned(),
-            }))
-            .with_path_param("activityId".to_string(), activity_id.to_string())
-            .execute(self.configuration.borrow())
+impl DefaultApi for DefaultApiClient {
+    fn get_activity(&self, activity_id: &str) -> Result<::models::Activity, Error> {
+        let configuration: &configuration::Configuration = self.configuration.borrow();
+        let client = &configuration.client;
+
+        let query_string = {
+            let mut query = ::url::form_urlencoded::Serializer::new(String::new());
+
+            query.finish()
+        };
+        let uri_str = format!("{}/activities/{activityId}?{}", configuration.base_path, query_string, activityId=activity_id);
+
+        let mut req_builder = client.get(uri_str.as_str());
+
+        if let Some(ref user_agent) = configuration.user_agent {
+            req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+        }
+
+
+        
+        if let Some(ref apikey) = configuration.api_key {
+            let key = apikey.key.clone();
+            let val = match apikey.prefix {
+                Some(ref prefix) => format!("{} {}", prefix, key),
+                None => key,
+            };
+            req_builder = req_builder.header("apikey", val);
+        };
+        
+
+
+        // send request
+        let req = req_builder.build()?;
+
+        Ok(client.execute(req)?.error_for_status()?.json()?)
     }
 
-    fn get_all_facility_media(&self, ) -> Box<Future<Item = (), Error = Error<serde_json::Value>>> {
-        __internal_request::Request::new(hyper::Method::Get, "/facilities/{facilityId}/media".to_string())
-            .with_auth(__internal_request::Auth::ApiKey(__internal_request::ApiKey{
-                in_header: true,
-                in_query: false,
-                param_name: "apikey".to_owned(),
-            }))
-            .returns_nothing()
-            .execute(self.configuration.borrow())
+    fn get_all_facility_media(&self, ) -> Result<(), Error> {
+        let configuration: &configuration::Configuration = self.configuration.borrow();
+        let client = &configuration.client;
+
+        let query_string = {
+            let mut query = ::url::form_urlencoded::Serializer::new(String::new());
+
+            query.finish()
+        };
+        let uri_str = format!("{}/facilities/{facilityId}/media?{}", configuration.base_path, query_string);
+
+        let mut req_builder = client.get(uri_str.as_str());
+
+        if let Some(ref user_agent) = configuration.user_agent {
+            req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+        }
+
+
+        
+        if let Some(ref apikey) = configuration.api_key {
+            let key = apikey.key.clone();
+            let val = match apikey.prefix {
+                Some(ref prefix) => format!("{} {}", prefix, key),
+                None => key,
+            };
+            req_builder = req_builder.header("apikey", val);
+        };
+        
+
+
+        // send request
+        let req = req_builder.build()?;
+
+        client.execute(req)?.error_for_status()?;
+        Ok(())
     }
 
-    fn get_all_rec_area_media(&self, ) -> Box<Future<Item = (), Error = Error<serde_json::Value>>> {
-        __internal_request::Request::new(hyper::Method::Get, "/recareas/{recAreaId}/media".to_string())
-            .with_auth(__internal_request::Auth::ApiKey(__internal_request::ApiKey{
-                in_header: true,
-                in_query: false,
-                param_name: "apikey".to_owned(),
-            }))
-            .returns_nothing()
-            .execute(self.configuration.borrow())
+    fn get_all_rec_area_media(&self, ) -> Result<(), Error> {
+        let configuration: &configuration::Configuration = self.configuration.borrow();
+        let client = &configuration.client;
+
+        let query_string = {
+            let mut query = ::url::form_urlencoded::Serializer::new(String::new());
+
+            query.finish()
+        };
+        let uri_str = format!("{}/recareas/{recAreaId}/media?{}", configuration.base_path, query_string);
+
+        let mut req_builder = client.get(uri_str.as_str());
+
+        if let Some(ref user_agent) = configuration.user_agent {
+            req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+        }
+
+
+        
+        if let Some(ref apikey) = configuration.api_key {
+            let key = apikey.key.clone();
+            let val = match apikey.prefix {
+                Some(ref prefix) => format!("{} {}", prefix, key),
+                None => key,
+            };
+            req_builder = req_builder.header("apikey", val);
+        };
+        
+
+
+        // send request
+        let req = req_builder.build()?;
+
+        client.execute(req)?.error_for_status()?;
+        Ok(())
     }
 
-    fn get_campsite(&self, campsite_id: &str) -> Box<Future<Item = ::models::Campsite, Error = Error<serde_json::Value>>> {
-        __internal_request::Request::new(hyper::Method::Get, "/campsites/{campsiteId}".to_string())
-            .with_auth(__internal_request::Auth::ApiKey(__internal_request::ApiKey{
-                in_header: true,
-                in_query: false,
-                param_name: "apikey".to_owned(),
-            }))
-            .with_path_param("campsiteId".to_string(), campsite_id.to_string())
-            .execute(self.configuration.borrow())
+    fn get_campsite(&self, campsite_id: &str) -> Result<::models::Campsite, Error> {
+        let configuration: &configuration::Configuration = self.configuration.borrow();
+        let client = &configuration.client;
+
+        let query_string = {
+            let mut query = ::url::form_urlencoded::Serializer::new(String::new());
+
+            query.finish()
+        };
+        let uri_str = format!("{}/campsites/{campsiteId}?{}", configuration.base_path, query_string, campsiteId=campsite_id);
+
+        let mut req_builder = client.get(uri_str.as_str());
+
+        if let Some(ref user_agent) = configuration.user_agent {
+            req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+        }
+
+
+        
+        if let Some(ref apikey) = configuration.api_key {
+            let key = apikey.key.clone();
+            let val = match apikey.prefix {
+                Some(ref prefix) => format!("{} {}", prefix, key),
+                None => key,
+            };
+            req_builder = req_builder.header("apikey", val);
+        };
+        
+
+
+        // send request
+        let req = req_builder.build()?;
+
+        Ok(client.execute(req)?.error_for_status()?.json()?)
     }
 
-    fn get_event(&self, event_id: &str) -> Box<Future<Item = ::models::Event, Error = Error<serde_json::Value>>> {
-        __internal_request::Request::new(hyper::Method::Get, "/events/{eventId}".to_string())
-            .with_auth(__internal_request::Auth::ApiKey(__internal_request::ApiKey{
-                in_header: true,
-                in_query: false,
-                param_name: "apikey".to_owned(),
-            }))
-            .with_path_param("eventId".to_string(), event_id.to_string())
-            .execute(self.configuration.borrow())
+    fn get_event(&self, event_id: &str) -> Result<::models::Event, Error> {
+        let configuration: &configuration::Configuration = self.configuration.borrow();
+        let client = &configuration.client;
+
+        let query_string = {
+            let mut query = ::url::form_urlencoded::Serializer::new(String::new());
+
+            query.finish()
+        };
+        let uri_str = format!("{}/events/{eventId}?{}", configuration.base_path, query_string, eventId=event_id);
+
+        let mut req_builder = client.get(uri_str.as_str());
+
+        if let Some(ref user_agent) = configuration.user_agent {
+            req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+        }
+
+
+        
+        if let Some(ref apikey) = configuration.api_key {
+            let key = apikey.key.clone();
+            let val = match apikey.prefix {
+                Some(ref prefix) => format!("{} {}", prefix, key),
+                None => key,
+            };
+            req_builder = req_builder.header("apikey", val);
+        };
+        
+
+
+        // send request
+        let req = req_builder.build()?;
+
+        Ok(client.execute(req)?.error_for_status()?.json()?)
     }
 
-    fn get_facility(&self, facility_id: &str) -> Box<Future<Item = ::models::Facility, Error = Error<serde_json::Value>>> {
-        __internal_request::Request::new(hyper::Method::Get, "/facilities/{facilityId}".to_string())
-            .with_auth(__internal_request::Auth::ApiKey(__internal_request::ApiKey{
-                in_header: true,
-                in_query: false,
-                param_name: "apikey".to_owned(),
-            }))
-            .with_path_param("facilityId".to_string(), facility_id.to_string())
-            .execute(self.configuration.borrow())
+    fn get_facility(&self, facility_id: &str) -> Result<::models::Facility, Error> {
+        let configuration: &configuration::Configuration = self.configuration.borrow();
+        let client = &configuration.client;
+
+        let query_string = {
+            let mut query = ::url::form_urlencoded::Serializer::new(String::new());
+
+            query.finish()
+        };
+        let uri_str = format!("{}/facilities/{facilityId}?{}", configuration.base_path, query_string, facilityId=facility_id);
+
+        let mut req_builder = client.get(uri_str.as_str());
+
+        if let Some(ref user_agent) = configuration.user_agent {
+            req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+        }
+
+
+        
+        if let Some(ref apikey) = configuration.api_key {
+            let key = apikey.key.clone();
+            let val = match apikey.prefix {
+                Some(ref prefix) => format!("{} {}", prefix, key),
+                None => key,
+            };
+            req_builder = req_builder.header("apikey", val);
+        };
+        
+
+
+        // send request
+        let req = req_builder.build()?;
+
+        Ok(client.execute(req)?.error_for_status()?.json()?)
     }
 
-    fn get_facility_activities(&self, ) -> Box<Future<Item = (), Error = Error<serde_json::Value>>> {
-        __internal_request::Request::new(hyper::Method::Get, "/facilities/{facilityId}/activities".to_string())
-            .with_auth(__internal_request::Auth::ApiKey(__internal_request::ApiKey{
-                in_header: true,
-                in_query: false,
-                param_name: "apikey".to_owned(),
-            }))
-            .returns_nothing()
-            .execute(self.configuration.borrow())
+    fn get_facility_activities(&self, ) -> Result<(), Error> {
+        let configuration: &configuration::Configuration = self.configuration.borrow();
+        let client = &configuration.client;
+
+        let query_string = {
+            let mut query = ::url::form_urlencoded::Serializer::new(String::new());
+
+            query.finish()
+        };
+        let uri_str = format!("{}/facilities/{facilityId}/activities?{}", configuration.base_path, query_string);
+
+        let mut req_builder = client.get(uri_str.as_str());
+
+        if let Some(ref user_agent) = configuration.user_agent {
+            req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+        }
+
+
+        
+        if let Some(ref apikey) = configuration.api_key {
+            let key = apikey.key.clone();
+            let val = match apikey.prefix {
+                Some(ref prefix) => format!("{} {}", prefix, key),
+                None => key,
+            };
+            req_builder = req_builder.header("apikey", val);
+        };
+        
+
+
+        // send request
+        let req = req_builder.build()?;
+
+        client.execute(req)?.error_for_status()?;
+        Ok(())
     }
 
-    fn get_facility_activity(&self, ) -> Box<Future<Item = (), Error = Error<serde_json::Value>>> {
-        __internal_request::Request::new(hyper::Method::Get, "/facilities/{facilityId}/activities/{activityId}".to_string())
-            .with_auth(__internal_request::Auth::ApiKey(__internal_request::ApiKey{
-                in_header: true,
-                in_query: false,
-                param_name: "apikey".to_owned(),
-            }))
-            .returns_nothing()
-            .execute(self.configuration.borrow())
+    fn get_facility_activity(&self, ) -> Result<(), Error> {
+        let configuration: &configuration::Configuration = self.configuration.borrow();
+        let client = &configuration.client;
+
+        let query_string = {
+            let mut query = ::url::form_urlencoded::Serializer::new(String::new());
+
+            query.finish()
+        };
+        let uri_str = format!("{}/facilities/{facilityId}/activities/{activityId}?{}", configuration.base_path, query_string);
+
+        let mut req_builder = client.get(uri_str.as_str());
+
+        if let Some(ref user_agent) = configuration.user_agent {
+            req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+        }
+
+
+        
+        if let Some(ref apikey) = configuration.api_key {
+            let key = apikey.key.clone();
+            let val = match apikey.prefix {
+                Some(ref prefix) => format!("{} {}", prefix, key),
+                None => key,
+            };
+            req_builder = req_builder.header("apikey", val);
+        };
+        
+
+
+        // send request
+        let req = req_builder.build()?;
+
+        client.execute(req)?.error_for_status()?;
+        Ok(())
     }
 
-    fn get_facility_address(&self, facility_address_id: &str) -> Box<Future<Item = ::models::FacilityAddress, Error = Error<serde_json::Value>>> {
-        __internal_request::Request::new(hyper::Method::Get, "/facilityaddresses/{facilityAddressId}".to_string())
-            .with_auth(__internal_request::Auth::ApiKey(__internal_request::ApiKey{
-                in_header: true,
-                in_query: false,
-                param_name: "apikey".to_owned(),
-            }))
-            .with_path_param("facilityAddressId".to_string(), facility_address_id.to_string())
-            .execute(self.configuration.borrow())
+    fn get_facility_address(&self, facility_address_id: &str) -> Result<::models::FacilityAddress, Error> {
+        let configuration: &configuration::Configuration = self.configuration.borrow();
+        let client = &configuration.client;
+
+        let query_string = {
+            let mut query = ::url::form_urlencoded::Serializer::new(String::new());
+
+            query.finish()
+        };
+        let uri_str = format!("{}/facilityaddresses/{facilityAddressId}?{}", configuration.base_path, query_string, facilityAddressId=facility_address_id);
+
+        let mut req_builder = client.get(uri_str.as_str());
+
+        if let Some(ref user_agent) = configuration.user_agent {
+            req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+        }
+
+
+        
+        if let Some(ref apikey) = configuration.api_key {
+            let key = apikey.key.clone();
+            let val = match apikey.prefix {
+                Some(ref prefix) => format!("{} {}", prefix, key),
+                None => key,
+            };
+            req_builder = req_builder.header("apikey", val);
+        };
+        
+
+
+        // send request
+        let req = req_builder.build()?;
+
+        Ok(client.execute(req)?.error_for_status()?.json()?)
     }
 
-    fn get_facility_campsite(&self, ) -> Box<Future<Item = (), Error = Error<serde_json::Value>>> {
-        __internal_request::Request::new(hyper::Method::Get, "/facilities/{facilityId}/campsites/{campsiteId}".to_string())
-            .with_auth(__internal_request::Auth::ApiKey(__internal_request::ApiKey{
-                in_header: true,
-                in_query: false,
-                param_name: "apikey".to_owned(),
-            }))
-            .returns_nothing()
-            .execute(self.configuration.borrow())
+    fn get_facility_campsite(&self, ) -> Result<(), Error> {
+        let configuration: &configuration::Configuration = self.configuration.borrow();
+        let client = &configuration.client;
+
+        let query_string = {
+            let mut query = ::url::form_urlencoded::Serializer::new(String::new());
+
+            query.finish()
+        };
+        let uri_str = format!("{}/facilities/{facilityId}/campsites/{campsiteId}?{}", configuration.base_path, query_string);
+
+        let mut req_builder = client.get(uri_str.as_str());
+
+        if let Some(ref user_agent) = configuration.user_agent {
+            req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+        }
+
+
+        
+        if let Some(ref apikey) = configuration.api_key {
+            let key = apikey.key.clone();
+            let val = match apikey.prefix {
+                Some(ref prefix) => format!("{} {}", prefix, key),
+                None => key,
+            };
+            req_builder = req_builder.header("apikey", val);
+        };
+        
+
+
+        // send request
+        let req = req_builder.build()?;
+
+        client.execute(req)?.error_for_status()?;
+        Ok(())
     }
 
-    fn get_facility_campsites(&self, ) -> Box<Future<Item = (), Error = Error<serde_json::Value>>> {
-        __internal_request::Request::new(hyper::Method::Get, "/facilities/{facilityId}/campsites".to_string())
-            .with_auth(__internal_request::Auth::ApiKey(__internal_request::ApiKey{
-                in_header: true,
-                in_query: false,
-                param_name: "apikey".to_owned(),
-            }))
-            .returns_nothing()
-            .execute(self.configuration.borrow())
+    fn get_facility_campsites(&self, ) -> Result<(), Error> {
+        let configuration: &configuration::Configuration = self.configuration.borrow();
+        let client = &configuration.client;
+
+        let query_string = {
+            let mut query = ::url::form_urlencoded::Serializer::new(String::new());
+
+            query.finish()
+        };
+        let uri_str = format!("{}/facilities/{facilityId}/campsites?{}", configuration.base_path, query_string);
+
+        let mut req_builder = client.get(uri_str.as_str());
+
+        if let Some(ref user_agent) = configuration.user_agent {
+            req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+        }
+
+
+        
+        if let Some(ref apikey) = configuration.api_key {
+            let key = apikey.key.clone();
+            let val = match apikey.prefix {
+                Some(ref prefix) => format!("{} {}", prefix, key),
+                None => key,
+            };
+            req_builder = req_builder.header("apikey", val);
+        };
+        
+
+
+        // send request
+        let req = req_builder.build()?;
+
+        client.execute(req)?.error_for_status()?;
+        Ok(())
     }
 
-    fn get_facility_event(&self, ) -> Box<Future<Item = (), Error = Error<serde_json::Value>>> {
-        __internal_request::Request::new(hyper::Method::Get, "/facilities/{facilityId}/events/{eventId}".to_string())
-            .with_auth(__internal_request::Auth::ApiKey(__internal_request::ApiKey{
-                in_header: true,
-                in_query: false,
-                param_name: "apikey".to_owned(),
-            }))
-            .returns_nothing()
-            .execute(self.configuration.borrow())
+    fn get_facility_event(&self, ) -> Result<(), Error> {
+        let configuration: &configuration::Configuration = self.configuration.borrow();
+        let client = &configuration.client;
+
+        let query_string = {
+            let mut query = ::url::form_urlencoded::Serializer::new(String::new());
+
+            query.finish()
+        };
+        let uri_str = format!("{}/facilities/{facilityId}/events/{eventId}?{}", configuration.base_path, query_string);
+
+        let mut req_builder = client.get(uri_str.as_str());
+
+        if let Some(ref user_agent) = configuration.user_agent {
+            req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+        }
+
+
+        
+        if let Some(ref apikey) = configuration.api_key {
+            let key = apikey.key.clone();
+            let val = match apikey.prefix {
+                Some(ref prefix) => format!("{} {}", prefix, key),
+                None => key,
+            };
+            req_builder = req_builder.header("apikey", val);
+        };
+        
+
+
+        // send request
+        let req = req_builder.build()?;
+
+        client.execute(req)?.error_for_status()?;
+        Ok(())
     }
 
-    fn get_facility_events(&self, ) -> Box<Future<Item = (), Error = Error<serde_json::Value>>> {
-        __internal_request::Request::new(hyper::Method::Get, "/facilities/{facilityId}/events".to_string())
-            .with_auth(__internal_request::Auth::ApiKey(__internal_request::ApiKey{
-                in_header: true,
-                in_query: false,
-                param_name: "apikey".to_owned(),
-            }))
-            .returns_nothing()
-            .execute(self.configuration.borrow())
+    fn get_facility_events(&self, ) -> Result<(), Error> {
+        let configuration: &configuration::Configuration = self.configuration.borrow();
+        let client = &configuration.client;
+
+        let query_string = {
+            let mut query = ::url::form_urlencoded::Serializer::new(String::new());
+
+            query.finish()
+        };
+        let uri_str = format!("{}/facilities/{facilityId}/events?{}", configuration.base_path, query_string);
+
+        let mut req_builder = client.get(uri_str.as_str());
+
+        if let Some(ref user_agent) = configuration.user_agent {
+            req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+        }
+
+
+        
+        if let Some(ref apikey) = configuration.api_key {
+            let key = apikey.key.clone();
+            let val = match apikey.prefix {
+                Some(ref prefix) => format!("{} {}", prefix, key),
+                None => key,
+            };
+            req_builder = req_builder.header("apikey", val);
+        };
+        
+
+
+        // send request
+        let req = req_builder.build()?;
+
+        client.execute(req)?.error_for_status()?;
+        Ok(())
     }
 
-    fn get_facility_facility_address(&self, ) -> Box<Future<Item = (), Error = Error<serde_json::Value>>> {
-        __internal_request::Request::new(hyper::Method::Get, "/facilities/{facilityId}/facilityaddresses/{facilityAddressId}".to_string())
-            .with_auth(__internal_request::Auth::ApiKey(__internal_request::ApiKey{
-                in_header: true,
-                in_query: false,
-                param_name: "apikey".to_owned(),
-            }))
-            .returns_nothing()
-            .execute(self.configuration.borrow())
+    fn get_facility_facility_address(&self, ) -> Result<(), Error> {
+        let configuration: &configuration::Configuration = self.configuration.borrow();
+        let client = &configuration.client;
+
+        let query_string = {
+            let mut query = ::url::form_urlencoded::Serializer::new(String::new());
+
+            query.finish()
+        };
+        let uri_str = format!("{}/facilities/{facilityId}/facilityaddresses/{facilityAddressId}?{}", configuration.base_path, query_string);
+
+        let mut req_builder = client.get(uri_str.as_str());
+
+        if let Some(ref user_agent) = configuration.user_agent {
+            req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+        }
+
+
+        
+        if let Some(ref apikey) = configuration.api_key {
+            let key = apikey.key.clone();
+            let val = match apikey.prefix {
+                Some(ref prefix) => format!("{} {}", prefix, key),
+                None => key,
+            };
+            req_builder = req_builder.header("apikey", val);
+        };
+        
+
+
+        // send request
+        let req = req_builder.build()?;
+
+        client.execute(req)?.error_for_status()?;
+        Ok(())
     }
 
-    fn get_facility_facility_addresses(&self, ) -> Box<Future<Item = (), Error = Error<serde_json::Value>>> {
-        __internal_request::Request::new(hyper::Method::Get, "/facilities/{facilityId}/facilityaddresses".to_string())
-            .with_auth(__internal_request::Auth::ApiKey(__internal_request::ApiKey{
-                in_header: true,
-                in_query: false,
-                param_name: "apikey".to_owned(),
-            }))
-            .returns_nothing()
-            .execute(self.configuration.borrow())
+    fn get_facility_facility_addresses(&self, ) -> Result<(), Error> {
+        let configuration: &configuration::Configuration = self.configuration.borrow();
+        let client = &configuration.client;
+
+        let query_string = {
+            let mut query = ::url::form_urlencoded::Serializer::new(String::new());
+
+            query.finish()
+        };
+        let uri_str = format!("{}/facilities/{facilityId}/facilityaddresses?{}", configuration.base_path, query_string);
+
+        let mut req_builder = client.get(uri_str.as_str());
+
+        if let Some(ref user_agent) = configuration.user_agent {
+            req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+        }
+
+
+        
+        if let Some(ref apikey) = configuration.api_key {
+            let key = apikey.key.clone();
+            let val = match apikey.prefix {
+                Some(ref prefix) => format!("{} {}", prefix, key),
+                None => key,
+            };
+            req_builder = req_builder.header("apikey", val);
+        };
+        
+
+
+        // send request
+        let req = req_builder.build()?;
+
+        client.execute(req)?.error_for_status()?;
+        Ok(())
     }
 
-    fn get_facility_link(&self, ) -> Box<Future<Item = (), Error = Error<serde_json::Value>>> {
-        __internal_request::Request::new(hyper::Method::Get, "/facilities/{facilityId}/links/{linkId}".to_string())
-            .with_auth(__internal_request::Auth::ApiKey(__internal_request::ApiKey{
-                in_header: true,
-                in_query: false,
-                param_name: "apikey".to_owned(),
-            }))
-            .returns_nothing()
-            .execute(self.configuration.borrow())
+    fn get_facility_link(&self, ) -> Result<(), Error> {
+        let configuration: &configuration::Configuration = self.configuration.borrow();
+        let client = &configuration.client;
+
+        let query_string = {
+            let mut query = ::url::form_urlencoded::Serializer::new(String::new());
+
+            query.finish()
+        };
+        let uri_str = format!("{}/facilities/{facilityId}/links/{linkId}?{}", configuration.base_path, query_string);
+
+        let mut req_builder = client.get(uri_str.as_str());
+
+        if let Some(ref user_agent) = configuration.user_agent {
+            req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+        }
+
+
+        
+        if let Some(ref apikey) = configuration.api_key {
+            let key = apikey.key.clone();
+            let val = match apikey.prefix {
+                Some(ref prefix) => format!("{} {}", prefix, key),
+                None => key,
+            };
+            req_builder = req_builder.header("apikey", val);
+        };
+        
+
+
+        // send request
+        let req = req_builder.build()?;
+
+        client.execute(req)?.error_for_status()?;
+        Ok(())
     }
 
-    fn get_facility_links(&self, ) -> Box<Future<Item = (), Error = Error<serde_json::Value>>> {
-        __internal_request::Request::new(hyper::Method::Get, "/facilities/{facilityId}/links".to_string())
-            .with_auth(__internal_request::Auth::ApiKey(__internal_request::ApiKey{
-                in_header: true,
-                in_query: false,
-                param_name: "apikey".to_owned(),
-            }))
-            .returns_nothing()
-            .execute(self.configuration.borrow())
+    fn get_facility_links(&self, ) -> Result<(), Error> {
+        let configuration: &configuration::Configuration = self.configuration.borrow();
+        let client = &configuration.client;
+
+        let query_string = {
+            let mut query = ::url::form_urlencoded::Serializer::new(String::new());
+
+            query.finish()
+        };
+        let uri_str = format!("{}/facilities/{facilityId}/links?{}", configuration.base_path, query_string);
+
+        let mut req_builder = client.get(uri_str.as_str());
+
+        if let Some(ref user_agent) = configuration.user_agent {
+            req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+        }
+
+
+        
+        if let Some(ref apikey) = configuration.api_key {
+            let key = apikey.key.clone();
+            let val = match apikey.prefix {
+                Some(ref prefix) => format!("{} {}", prefix, key),
+                None => key,
+            };
+            req_builder = req_builder.header("apikey", val);
+        };
+        
+
+
+        // send request
+        let req = req_builder.build()?;
+
+        client.execute(req)?.error_for_status()?;
+        Ok(())
     }
 
-    fn get_facility_media(&self, ) -> Box<Future<Item = (), Error = Error<serde_json::Value>>> {
-        __internal_request::Request::new(hyper::Method::Get, "/facilities/{facilityId}/media/{mediaId}".to_string())
-            .with_auth(__internal_request::Auth::ApiKey(__internal_request::ApiKey{
-                in_header: true,
-                in_query: false,
-                param_name: "apikey".to_owned(),
-            }))
-            .returns_nothing()
-            .execute(self.configuration.borrow())
+    fn get_facility_media(&self, ) -> Result<(), Error> {
+        let configuration: &configuration::Configuration = self.configuration.borrow();
+        let client = &configuration.client;
+
+        let query_string = {
+            let mut query = ::url::form_urlencoded::Serializer::new(String::new());
+
+            query.finish()
+        };
+        let uri_str = format!("{}/facilities/{facilityId}/media/{mediaId}?{}", configuration.base_path, query_string);
+
+        let mut req_builder = client.get(uri_str.as_str());
+
+        if let Some(ref user_agent) = configuration.user_agent {
+            req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+        }
+
+
+        
+        if let Some(ref apikey) = configuration.api_key {
+            let key = apikey.key.clone();
+            let val = match apikey.prefix {
+                Some(ref prefix) => format!("{} {}", prefix, key),
+                None => key,
+            };
+            req_builder = req_builder.header("apikey", val);
+        };
+        
+
+
+        // send request
+        let req = req_builder.build()?;
+
+        client.execute(req)?.error_for_status()?;
+        Ok(())
     }
 
-    fn get_facility_permit_entrance(&self, ) -> Box<Future<Item = (), Error = Error<serde_json::Value>>> {
-        __internal_request::Request::new(hyper::Method::Get, "/facilities/{facilityId}/permitentrances/{permitEntranceId}".to_string())
-            .with_auth(__internal_request::Auth::ApiKey(__internal_request::ApiKey{
-                in_header: true,
-                in_query: false,
-                param_name: "apikey".to_owned(),
-            }))
-            .returns_nothing()
-            .execute(self.configuration.borrow())
+    fn get_facility_permit_entrance(&self, ) -> Result<(), Error> {
+        let configuration: &configuration::Configuration = self.configuration.borrow();
+        let client = &configuration.client;
+
+        let query_string = {
+            let mut query = ::url::form_urlencoded::Serializer::new(String::new());
+
+            query.finish()
+        };
+        let uri_str = format!("{}/facilities/{facilityId}/permitentrances/{permitEntranceId}?{}", configuration.base_path, query_string);
+
+        let mut req_builder = client.get(uri_str.as_str());
+
+        if let Some(ref user_agent) = configuration.user_agent {
+            req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+        }
+
+
+        
+        if let Some(ref apikey) = configuration.api_key {
+            let key = apikey.key.clone();
+            let val = match apikey.prefix {
+                Some(ref prefix) => format!("{} {}", prefix, key),
+                None => key,
+            };
+            req_builder = req_builder.header("apikey", val);
+        };
+        
+
+
+        // send request
+        let req = req_builder.build()?;
+
+        client.execute(req)?.error_for_status()?;
+        Ok(())
     }
 
-    fn get_facility_permit_entrances(&self, ) -> Box<Future<Item = (), Error = Error<serde_json::Value>>> {
-        __internal_request::Request::new(hyper::Method::Get, "/facilities/{facilityId}/permitentrances".to_string())
-            .with_auth(__internal_request::Auth::ApiKey(__internal_request::ApiKey{
-                in_header: true,
-                in_query: false,
-                param_name: "apikey".to_owned(),
-            }))
-            .returns_nothing()
-            .execute(self.configuration.borrow())
+    fn get_facility_permit_entrances(&self, ) -> Result<(), Error> {
+        let configuration: &configuration::Configuration = self.configuration.borrow();
+        let client = &configuration.client;
+
+        let query_string = {
+            let mut query = ::url::form_urlencoded::Serializer::new(String::new());
+
+            query.finish()
+        };
+        let uri_str = format!("{}/facilities/{facilityId}/permitentrances?{}", configuration.base_path, query_string);
+
+        let mut req_builder = client.get(uri_str.as_str());
+
+        if let Some(ref user_agent) = configuration.user_agent {
+            req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+        }
+
+
+        
+        if let Some(ref apikey) = configuration.api_key {
+            let key = apikey.key.clone();
+            let val = match apikey.prefix {
+                Some(ref prefix) => format!("{} {}", prefix, key),
+                None => key,
+            };
+            req_builder = req_builder.header("apikey", val);
+        };
+        
+
+
+        // send request
+        let req = req_builder.build()?;
+
+        client.execute(req)?.error_for_status()?;
+        Ok(())
     }
 
-    fn get_facility_tour(&self, ) -> Box<Future<Item = (), Error = Error<serde_json::Value>>> {
-        __internal_request::Request::new(hyper::Method::Get, "/facilities/{facilityId}/tours/{tourId}".to_string())
-            .with_auth(__internal_request::Auth::ApiKey(__internal_request::ApiKey{
-                in_header: true,
-                in_query: false,
-                param_name: "apikey".to_owned(),
-            }))
-            .returns_nothing()
-            .execute(self.configuration.borrow())
+    fn get_facility_tour(&self, ) -> Result<(), Error> {
+        let configuration: &configuration::Configuration = self.configuration.borrow();
+        let client = &configuration.client;
+
+        let query_string = {
+            let mut query = ::url::form_urlencoded::Serializer::new(String::new());
+
+            query.finish()
+        };
+        let uri_str = format!("{}/facilities/{facilityId}/tours/{tourId}?{}", configuration.base_path, query_string);
+
+        let mut req_builder = client.get(uri_str.as_str());
+
+        if let Some(ref user_agent) = configuration.user_agent {
+            req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+        }
+
+
+        
+        if let Some(ref apikey) = configuration.api_key {
+            let key = apikey.key.clone();
+            let val = match apikey.prefix {
+                Some(ref prefix) => format!("{} {}", prefix, key),
+                None => key,
+            };
+            req_builder = req_builder.header("apikey", val);
+        };
+        
+
+
+        // send request
+        let req = req_builder.build()?;
+
+        client.execute(req)?.error_for_status()?;
+        Ok(())
     }
 
-    fn get_facility_tours(&self, ) -> Box<Future<Item = (), Error = Error<serde_json::Value>>> {
-        __internal_request::Request::new(hyper::Method::Get, "/facilities/{facilityId}/tours".to_string())
-            .with_auth(__internal_request::Auth::ApiKey(__internal_request::ApiKey{
-                in_header: true,
-                in_query: false,
-                param_name: "apikey".to_owned(),
-            }))
-            .returns_nothing()
-            .execute(self.configuration.borrow())
+    fn get_facility_tours(&self, ) -> Result<(), Error> {
+        let configuration: &configuration::Configuration = self.configuration.borrow();
+        let client = &configuration.client;
+
+        let query_string = {
+            let mut query = ::url::form_urlencoded::Serializer::new(String::new());
+
+            query.finish()
+        };
+        let uri_str = format!("{}/facilities/{facilityId}/tours?{}", configuration.base_path, query_string);
+
+        let mut req_builder = client.get(uri_str.as_str());
+
+        if let Some(ref user_agent) = configuration.user_agent {
+            req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+        }
+
+
+        
+        if let Some(ref apikey) = configuration.api_key {
+            let key = apikey.key.clone();
+            let val = match apikey.prefix {
+                Some(ref prefix) => format!("{} {}", prefix, key),
+                None => key,
+            };
+            req_builder = req_builder.header("apikey", val);
+        };
+        
+
+
+        // send request
+        let req = req_builder.build()?;
+
+        client.execute(req)?.error_for_status()?;
+        Ok(())
     }
 
-    fn get_link(&self, link_id: &str) -> Box<Future<Item = ::models::Link, Error = Error<serde_json::Value>>> {
-        __internal_request::Request::new(hyper::Method::Get, "/links/{linkId}".to_string())
-            .with_auth(__internal_request::Auth::ApiKey(__internal_request::ApiKey{
-                in_header: true,
-                in_query: false,
-                param_name: "apikey".to_owned(),
-            }))
-            .with_path_param("linkId".to_string(), link_id.to_string())
-            .execute(self.configuration.borrow())
+    fn get_link(&self, link_id: &str) -> Result<::models::Link, Error> {
+        let configuration: &configuration::Configuration = self.configuration.borrow();
+        let client = &configuration.client;
+
+        let query_string = {
+            let mut query = ::url::form_urlencoded::Serializer::new(String::new());
+
+            query.finish()
+        };
+        let uri_str = format!("{}/links/{linkId}?{}", configuration.base_path, query_string, linkId=link_id);
+
+        let mut req_builder = client.get(uri_str.as_str());
+
+        if let Some(ref user_agent) = configuration.user_agent {
+            req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+        }
+
+
+        
+        if let Some(ref apikey) = configuration.api_key {
+            let key = apikey.key.clone();
+            let val = match apikey.prefix {
+                Some(ref prefix) => format!("{} {}", prefix, key),
+                None => key,
+            };
+            req_builder = req_builder.header("apikey", val);
+        };
+        
+
+
+        // send request
+        let req = req_builder.build()?;
+
+        Ok(client.execute(req)?.error_for_status()?.json()?)
     }
 
-    fn get_media(&self, media_id: &str) -> Box<Future<Item = ::models::Media, Error = Error<serde_json::Value>>> {
-        __internal_request::Request::new(hyper::Method::Get, "/media/{mediaId}".to_string())
-            .with_auth(__internal_request::Auth::ApiKey(__internal_request::ApiKey{
-                in_header: true,
-                in_query: false,
-                param_name: "apikey".to_owned(),
-            }))
-            .with_path_param("mediaId".to_string(), media_id.to_string())
-            .execute(self.configuration.borrow())
+    fn get_media(&self, media_id: &str) -> Result<::models::Media, Error> {
+        let configuration: &configuration::Configuration = self.configuration.borrow();
+        let client = &configuration.client;
+
+        let query_string = {
+            let mut query = ::url::form_urlencoded::Serializer::new(String::new());
+
+            query.finish()
+        };
+        let uri_str = format!("{}/media/{mediaId}?{}", configuration.base_path, query_string, mediaId=media_id);
+
+        let mut req_builder = client.get(uri_str.as_str());
+
+        if let Some(ref user_agent) = configuration.user_agent {
+            req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+        }
+
+
+        
+        if let Some(ref apikey) = configuration.api_key {
+            let key = apikey.key.clone();
+            let val = match apikey.prefix {
+                Some(ref prefix) => format!("{} {}", prefix, key),
+                None => key,
+            };
+            req_builder = req_builder.header("apikey", val);
+        };
+        
+
+
+        // send request
+        let req = req_builder.build()?;
+
+        Ok(client.execute(req)?.error_for_status()?.json()?)
     }
 
-    fn get_organization(&self, org_id: &str) -> Box<Future<Item = Vec<::models::Organization>, Error = Error<serde_json::Value>>> {
-        __internal_request::Request::new(hyper::Method::Get, "/organizations/{orgId}".to_string())
-            .with_auth(__internal_request::Auth::ApiKey(__internal_request::ApiKey{
-                in_header: true,
-                in_query: false,
-                param_name: "apikey".to_owned(),
-            }))
-            .with_path_param("orgId".to_string(), org_id.to_string())
-            .execute(self.configuration.borrow())
+    fn get_organization(&self, org_id: &str) -> Result<Vec<::models::Organization>, Error> {
+        let configuration: &configuration::Configuration = self.configuration.borrow();
+        let client = &configuration.client;
+
+        let query_string = {
+            let mut query = ::url::form_urlencoded::Serializer::new(String::new());
+
+            query.finish()
+        };
+        let uri_str = format!("{}/organizations/{orgId}?{}", configuration.base_path, query_string, orgId=org_id);
+
+        let mut req_builder = client.get(uri_str.as_str());
+
+        if let Some(ref user_agent) = configuration.user_agent {
+            req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+        }
+
+
+        
+        if let Some(ref apikey) = configuration.api_key {
+            let key = apikey.key.clone();
+            let val = match apikey.prefix {
+                Some(ref prefix) => format!("{} {}", prefix, key),
+                None => key,
+            };
+            req_builder = req_builder.header("apikey", val);
+        };
+        
+
+
+        // send request
+        let req = req_builder.build()?;
+
+        Ok(client.execute(req)?.error_for_status()?.json()?)
     }
 
-    fn get_organization_facility(&self, ) -> Box<Future<Item = (), Error = Error<serde_json::Value>>> {
-        __internal_request::Request::new(hyper::Method::Get, "/organizations/{orgId}/facilities/{facilityId}".to_string())
-            .with_auth(__internal_request::Auth::ApiKey(__internal_request::ApiKey{
-                in_header: true,
-                in_query: false,
-                param_name: "apikey".to_owned(),
-            }))
-            .returns_nothing()
-            .execute(self.configuration.borrow())
+    fn get_organization_facility(&self, ) -> Result<(), Error> {
+        let configuration: &configuration::Configuration = self.configuration.borrow();
+        let client = &configuration.client;
+
+        let query_string = {
+            let mut query = ::url::form_urlencoded::Serializer::new(String::new());
+
+            query.finish()
+        };
+        let uri_str = format!("{}/organizations/{orgId}/facilities/{facilityId}?{}", configuration.base_path, query_string);
+
+        let mut req_builder = client.get(uri_str.as_str());
+
+        if let Some(ref user_agent) = configuration.user_agent {
+            req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+        }
+
+
+        
+        if let Some(ref apikey) = configuration.api_key {
+            let key = apikey.key.clone();
+            let val = match apikey.prefix {
+                Some(ref prefix) => format!("{} {}", prefix, key),
+                None => key,
+            };
+            req_builder = req_builder.header("apikey", val);
+        };
+        
+
+
+        // send request
+        let req = req_builder.build()?;
+
+        client.execute(req)?.error_for_status()?;
+        Ok(())
     }
 
-    fn get_organization_rec_area(&self, ) -> Box<Future<Item = (), Error = Error<serde_json::Value>>> {
-        __internal_request::Request::new(hyper::Method::Get, "/organizations/{orgId}/recareas/{recAreaId}".to_string())
-            .with_auth(__internal_request::Auth::ApiKey(__internal_request::ApiKey{
-                in_header: true,
-                in_query: false,
-                param_name: "apikey".to_owned(),
-            }))
-            .returns_nothing()
-            .execute(self.configuration.borrow())
+    fn get_organization_rec_area(&self, ) -> Result<(), Error> {
+        let configuration: &configuration::Configuration = self.configuration.borrow();
+        let client = &configuration.client;
+
+        let query_string = {
+            let mut query = ::url::form_urlencoded::Serializer::new(String::new());
+
+            query.finish()
+        };
+        let uri_str = format!("{}/organizations/{orgId}/recareas/{recAreaId}?{}", configuration.base_path, query_string);
+
+        let mut req_builder = client.get(uri_str.as_str());
+
+        if let Some(ref user_agent) = configuration.user_agent {
+            req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+        }
+
+
+        
+        if let Some(ref apikey) = configuration.api_key {
+            let key = apikey.key.clone();
+            let val = match apikey.prefix {
+                Some(ref prefix) => format!("{} {}", prefix, key),
+                None => key,
+            };
+            req_builder = req_builder.header("apikey", val);
+        };
+        
+
+
+        // send request
+        let req = req_builder.build()?;
+
+        client.execute(req)?.error_for_status()?;
+        Ok(())
     }
 
-    fn get_organization_rec_areas(&self, ) -> Box<Future<Item = (), Error = Error<serde_json::Value>>> {
-        __internal_request::Request::new(hyper::Method::Get, "/organizations/{orgId}/recareas".to_string())
-            .with_auth(__internal_request::Auth::ApiKey(__internal_request::ApiKey{
-                in_header: true,
-                in_query: false,
-                param_name: "apikey".to_owned(),
-            }))
-            .returns_nothing()
-            .execute(self.configuration.borrow())
+    fn get_organization_rec_areas(&self, ) -> Result<(), Error> {
+        let configuration: &configuration::Configuration = self.configuration.borrow();
+        let client = &configuration.client;
+
+        let query_string = {
+            let mut query = ::url::form_urlencoded::Serializer::new(String::new());
+
+            query.finish()
+        };
+        let uri_str = format!("{}/organizations/{orgId}/recareas?{}", configuration.base_path, query_string);
+
+        let mut req_builder = client.get(uri_str.as_str());
+
+        if let Some(ref user_agent) = configuration.user_agent {
+            req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+        }
+
+
+        
+        if let Some(ref apikey) = configuration.api_key {
+            let key = apikey.key.clone();
+            let val = match apikey.prefix {
+                Some(ref prefix) => format!("{} {}", prefix, key),
+                None => key,
+            };
+            req_builder = req_builder.header("apikey", val);
+        };
+        
+
+
+        // send request
+        let req = req_builder.build()?;
+
+        client.execute(req)?.error_for_status()?;
+        Ok(())
     }
 
-    fn get_permit_entrance(&self, permit_entrance_id: &str) -> Box<Future<Item = ::models::PermitEntrance, Error = Error<serde_json::Value>>> {
-        __internal_request::Request::new(hyper::Method::Get, "/permitentrances/{permitentranceId}".to_string())
-            .with_auth(__internal_request::Auth::ApiKey(__internal_request::ApiKey{
-                in_header: true,
-                in_query: false,
-                param_name: "apikey".to_owned(),
-            }))
-            .with_path_param("permitEntranceId".to_string(), permit_entrance_id.to_string())
-            .execute(self.configuration.borrow())
+    fn get_permit_entrance(&self, permit_entrance_id: &str) -> Result<::models::PermitEntrance, Error> {
+        let configuration: &configuration::Configuration = self.configuration.borrow();
+        let client = &configuration.client;
+
+        let query_string = {
+            let mut query = ::url::form_urlencoded::Serializer::new(String::new());
+
+            query.finish()
+        };
+        let uri_str = format!("{}/permitentrances/{permitentranceId}?{}", configuration.base_path, query_string, permitEntranceId=permit_entrance_id);
+
+        let mut req_builder = client.get(uri_str.as_str());
+
+        if let Some(ref user_agent) = configuration.user_agent {
+            req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+        }
+
+
+        
+        if let Some(ref apikey) = configuration.api_key {
+            let key = apikey.key.clone();
+            let val = match apikey.prefix {
+                Some(ref prefix) => format!("{} {}", prefix, key),
+                None => key,
+            };
+            req_builder = req_builder.header("apikey", val);
+        };
+        
+
+
+        // send request
+        let req = req_builder.build()?;
+
+        Ok(client.execute(req)?.error_for_status()?.json()?)
     }
 
-    fn get_permit_entrance_attributes(&self, ) -> Box<Future<Item = (), Error = Error<serde_json::Value>>> {
-        __internal_request::Request::new(hyper::Method::Get, "/permitentrances/{permitEntranceId}/attributes".to_string())
-            .with_auth(__internal_request::Auth::ApiKey(__internal_request::ApiKey{
-                in_header: true,
-                in_query: false,
-                param_name: "apikey".to_owned(),
-            }))
-            .returns_nothing()
-            .execute(self.configuration.borrow())
+    fn get_permit_entrance_attributes(&self, ) -> Result<(), Error> {
+        let configuration: &configuration::Configuration = self.configuration.borrow();
+        let client = &configuration.client;
+
+        let query_string = {
+            let mut query = ::url::form_urlencoded::Serializer::new(String::new());
+
+            query.finish()
+        };
+        let uri_str = format!("{}/permitentrances/{permitEntranceId}/attributes?{}", configuration.base_path, query_string);
+
+        let mut req_builder = client.get(uri_str.as_str());
+
+        if let Some(ref user_agent) = configuration.user_agent {
+            req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+        }
+
+
+        
+        if let Some(ref apikey) = configuration.api_key {
+            let key = apikey.key.clone();
+            let val = match apikey.prefix {
+                Some(ref prefix) => format!("{} {}", prefix, key),
+                None => key,
+            };
+            req_builder = req_builder.header("apikey", val);
+        };
+        
+
+
+        // send request
+        let req = req_builder.build()?;
+
+        client.execute(req)?.error_for_status()?;
+        Ok(())
     }
 
-    fn get_rec_area(&self, rec_area_id: &str) -> Box<Future<Item = ::models::RecreationArea, Error = Error<serde_json::Value>>> {
-        __internal_request::Request::new(hyper::Method::Get, "/recareas/{recAreaId}".to_string())
-            .with_auth(__internal_request::Auth::ApiKey(__internal_request::ApiKey{
-                in_header: true,
-                in_query: false,
-                param_name: "apikey".to_owned(),
-            }))
-            .with_path_param("recAreaId".to_string(), rec_area_id.to_string())
-            .execute(self.configuration.borrow())
+    fn get_rec_area(&self, rec_area_id: &str) -> Result<::models::RecreationArea, Error> {
+        let configuration: &configuration::Configuration = self.configuration.borrow();
+        let client = &configuration.client;
+
+        let query_string = {
+            let mut query = ::url::form_urlencoded::Serializer::new(String::new());
+
+            query.finish()
+        };
+        let uri_str = format!("{}/recareas/{recAreaId}?{}", configuration.base_path, query_string, recAreaId=rec_area_id);
+
+        let mut req_builder = client.get(uri_str.as_str());
+
+        if let Some(ref user_agent) = configuration.user_agent {
+            req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+        }
+
+
+        
+        if let Some(ref apikey) = configuration.api_key {
+            let key = apikey.key.clone();
+            let val = match apikey.prefix {
+                Some(ref prefix) => format!("{} {}", prefix, key),
+                None => key,
+            };
+            req_builder = req_builder.header("apikey", val);
+        };
+        
+
+
+        // send request
+        let req = req_builder.build()?;
+
+        Ok(client.execute(req)?.error_for_status()?.json()?)
     }
 
-    fn get_rec_area_activities(&self, ) -> Box<Future<Item = (), Error = Error<serde_json::Value>>> {
-        __internal_request::Request::new(hyper::Method::Get, "/recareas/{recAreaId}/activities".to_string())
-            .with_auth(__internal_request::Auth::ApiKey(__internal_request::ApiKey{
-                in_header: true,
-                in_query: false,
-                param_name: "apikey".to_owned(),
-            }))
-            .returns_nothing()
-            .execute(self.configuration.borrow())
+    fn get_rec_area_activities(&self, ) -> Result<(), Error> {
+        let configuration: &configuration::Configuration = self.configuration.borrow();
+        let client = &configuration.client;
+
+        let query_string = {
+            let mut query = ::url::form_urlencoded::Serializer::new(String::new());
+
+            query.finish()
+        };
+        let uri_str = format!("{}/recareas/{recAreaId}/activities?{}", configuration.base_path, query_string);
+
+        let mut req_builder = client.get(uri_str.as_str());
+
+        if let Some(ref user_agent) = configuration.user_agent {
+            req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+        }
+
+
+        
+        if let Some(ref apikey) = configuration.api_key {
+            let key = apikey.key.clone();
+            let val = match apikey.prefix {
+                Some(ref prefix) => format!("{} {}", prefix, key),
+                None => key,
+            };
+            req_builder = req_builder.header("apikey", val);
+        };
+        
+
+
+        // send request
+        let req = req_builder.build()?;
+
+        client.execute(req)?.error_for_status()?;
+        Ok(())
     }
 
-    fn get_rec_area_activity(&self, ) -> Box<Future<Item = (), Error = Error<serde_json::Value>>> {
-        __internal_request::Request::new(hyper::Method::Get, "/recareas/{recAreaId}/activities/{activityId}".to_string())
-            .with_auth(__internal_request::Auth::ApiKey(__internal_request::ApiKey{
-                in_header: true,
-                in_query: false,
-                param_name: "apikey".to_owned(),
-            }))
-            .returns_nothing()
-            .execute(self.configuration.borrow())
+    fn get_rec_area_activity(&self, ) -> Result<(), Error> {
+        let configuration: &configuration::Configuration = self.configuration.borrow();
+        let client = &configuration.client;
+
+        let query_string = {
+            let mut query = ::url::form_urlencoded::Serializer::new(String::new());
+
+            query.finish()
+        };
+        let uri_str = format!("{}/recareas/{recAreaId}/activities/{activityId}?{}", configuration.base_path, query_string);
+
+        let mut req_builder = client.get(uri_str.as_str());
+
+        if let Some(ref user_agent) = configuration.user_agent {
+            req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+        }
+
+
+        
+        if let Some(ref apikey) = configuration.api_key {
+            let key = apikey.key.clone();
+            let val = match apikey.prefix {
+                Some(ref prefix) => format!("{} {}", prefix, key),
+                None => key,
+            };
+            req_builder = req_builder.header("apikey", val);
+        };
+        
+
+
+        // send request
+        let req = req_builder.build()?;
+
+        client.execute(req)?.error_for_status()?;
+        Ok(())
     }
 
-    fn get_rec_area_address(&self, rec_area_address_id: &str) -> Box<Future<Item = ::models::RecreationAreaAddress, Error = Error<serde_json::Value>>> {
-        __internal_request::Request::new(hyper::Method::Get, "/recareaaddresses/{recAreaAddressId}".to_string())
-            .with_auth(__internal_request::Auth::ApiKey(__internal_request::ApiKey{
-                in_header: true,
-                in_query: false,
-                param_name: "apikey".to_owned(),
-            }))
-            .with_path_param("recAreaAddressId".to_string(), rec_area_address_id.to_string())
-            .execute(self.configuration.borrow())
+    fn get_rec_area_address(&self, rec_area_address_id: &str) -> Result<::models::RecreationAreaAddress, Error> {
+        let configuration: &configuration::Configuration = self.configuration.borrow();
+        let client = &configuration.client;
+
+        let query_string = {
+            let mut query = ::url::form_urlencoded::Serializer::new(String::new());
+
+            query.finish()
+        };
+        let uri_str = format!("{}/recareaaddresses/{recAreaAddressId}?{}", configuration.base_path, query_string, recAreaAddressId=rec_area_address_id);
+
+        let mut req_builder = client.get(uri_str.as_str());
+
+        if let Some(ref user_agent) = configuration.user_agent {
+            req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+        }
+
+
+        
+        if let Some(ref apikey) = configuration.api_key {
+            let key = apikey.key.clone();
+            let val = match apikey.prefix {
+                Some(ref prefix) => format!("{} {}", prefix, key),
+                None => key,
+            };
+            req_builder = req_builder.header("apikey", val);
+        };
+        
+
+
+        // send request
+        let req = req_builder.build()?;
+
+        Ok(client.execute(req)?.error_for_status()?.json()?)
     }
 
-    fn get_rec_area_event(&self, ) -> Box<Future<Item = (), Error = Error<serde_json::Value>>> {
-        __internal_request::Request::new(hyper::Method::Get, "/recareas/{recAreaId}/events/{eventId}".to_string())
-            .with_auth(__internal_request::Auth::ApiKey(__internal_request::ApiKey{
-                in_header: true,
-                in_query: false,
-                param_name: "apikey".to_owned(),
-            }))
-            .returns_nothing()
-            .execute(self.configuration.borrow())
+    fn get_rec_area_event(&self, ) -> Result<(), Error> {
+        let configuration: &configuration::Configuration = self.configuration.borrow();
+        let client = &configuration.client;
+
+        let query_string = {
+            let mut query = ::url::form_urlencoded::Serializer::new(String::new());
+
+            query.finish()
+        };
+        let uri_str = format!("{}/recareas/{recAreaId}/events/{eventId}?{}", configuration.base_path, query_string);
+
+        let mut req_builder = client.get(uri_str.as_str());
+
+        if let Some(ref user_agent) = configuration.user_agent {
+            req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+        }
+
+
+        
+        if let Some(ref apikey) = configuration.api_key {
+            let key = apikey.key.clone();
+            let val = match apikey.prefix {
+                Some(ref prefix) => format!("{} {}", prefix, key),
+                None => key,
+            };
+            req_builder = req_builder.header("apikey", val);
+        };
+        
+
+
+        // send request
+        let req = req_builder.build()?;
+
+        client.execute(req)?.error_for_status()?;
+        Ok(())
     }
 
-    fn get_rec_area_events(&self, ) -> Box<Future<Item = (), Error = Error<serde_json::Value>>> {
-        __internal_request::Request::new(hyper::Method::Get, "/recareas/{recAreaId}/events".to_string())
-            .with_auth(__internal_request::Auth::ApiKey(__internal_request::ApiKey{
-                in_header: true,
-                in_query: false,
-                param_name: "apikey".to_owned(),
-            }))
-            .returns_nothing()
-            .execute(self.configuration.borrow())
+    fn get_rec_area_events(&self, ) -> Result<(), Error> {
+        let configuration: &configuration::Configuration = self.configuration.borrow();
+        let client = &configuration.client;
+
+        let query_string = {
+            let mut query = ::url::form_urlencoded::Serializer::new(String::new());
+
+            query.finish()
+        };
+        let uri_str = format!("{}/recareas/{recAreaId}/events?{}", configuration.base_path, query_string);
+
+        let mut req_builder = client.get(uri_str.as_str());
+
+        if let Some(ref user_agent) = configuration.user_agent {
+            req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+        }
+
+
+        
+        if let Some(ref apikey) = configuration.api_key {
+            let key = apikey.key.clone();
+            let val = match apikey.prefix {
+                Some(ref prefix) => format!("{} {}", prefix, key),
+                None => key,
+            };
+            req_builder = req_builder.header("apikey", val);
+        };
+        
+
+
+        // send request
+        let req = req_builder.build()?;
+
+        client.execute(req)?.error_for_status()?;
+        Ok(())
     }
 
-    fn get_rec_area_facility(&self, ) -> Box<Future<Item = (), Error = Error<serde_json::Value>>> {
-        __internal_request::Request::new(hyper::Method::Get, "/recareas/{recAreaId}/facilities/{facilityId}".to_string())
-            .with_auth(__internal_request::Auth::ApiKey(__internal_request::ApiKey{
-                in_header: true,
-                in_query: false,
-                param_name: "apikey".to_owned(),
-            }))
-            .returns_nothing()
-            .execute(self.configuration.borrow())
+    fn get_rec_area_facility(&self, ) -> Result<(), Error> {
+        let configuration: &configuration::Configuration = self.configuration.borrow();
+        let client = &configuration.client;
+
+        let query_string = {
+            let mut query = ::url::form_urlencoded::Serializer::new(String::new());
+
+            query.finish()
+        };
+        let uri_str = format!("{}/recareas/{recAreaId}/facilities/{facilityId}?{}", configuration.base_path, query_string);
+
+        let mut req_builder = client.get(uri_str.as_str());
+
+        if let Some(ref user_agent) = configuration.user_agent {
+            req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+        }
+
+
+        
+        if let Some(ref apikey) = configuration.api_key {
+            let key = apikey.key.clone();
+            let val = match apikey.prefix {
+                Some(ref prefix) => format!("{} {}", prefix, key),
+                None => key,
+            };
+            req_builder = req_builder.header("apikey", val);
+        };
+        
+
+
+        // send request
+        let req = req_builder.build()?;
+
+        client.execute(req)?.error_for_status()?;
+        Ok(())
     }
 
-    fn get_rec_area_link(&self, ) -> Box<Future<Item = (), Error = Error<serde_json::Value>>> {
-        __internal_request::Request::new(hyper::Method::Get, "/recareas/{recAreaId}/links/{linkId}".to_string())
-            .with_auth(__internal_request::Auth::ApiKey(__internal_request::ApiKey{
-                in_header: true,
-                in_query: false,
-                param_name: "apikey".to_owned(),
-            }))
-            .returns_nothing()
-            .execute(self.configuration.borrow())
+    fn get_rec_area_link(&self, ) -> Result<(), Error> {
+        let configuration: &configuration::Configuration = self.configuration.borrow();
+        let client = &configuration.client;
+
+        let query_string = {
+            let mut query = ::url::form_urlencoded::Serializer::new(String::new());
+
+            query.finish()
+        };
+        let uri_str = format!("{}/recareas/{recAreaId}/links/{linkId}?{}", configuration.base_path, query_string);
+
+        let mut req_builder = client.get(uri_str.as_str());
+
+        if let Some(ref user_agent) = configuration.user_agent {
+            req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+        }
+
+
+        
+        if let Some(ref apikey) = configuration.api_key {
+            let key = apikey.key.clone();
+            let val = match apikey.prefix {
+                Some(ref prefix) => format!("{} {}", prefix, key),
+                None => key,
+            };
+            req_builder = req_builder.header("apikey", val);
+        };
+        
+
+
+        // send request
+        let req = req_builder.build()?;
+
+        client.execute(req)?.error_for_status()?;
+        Ok(())
     }
 
-    fn get_rec_area_links(&self, ) -> Box<Future<Item = (), Error = Error<serde_json::Value>>> {
-        __internal_request::Request::new(hyper::Method::Get, "/recareas/{recAreaId}/links".to_string())
-            .with_auth(__internal_request::Auth::ApiKey(__internal_request::ApiKey{
-                in_header: true,
-                in_query: false,
-                param_name: "apikey".to_owned(),
-            }))
-            .returns_nothing()
-            .execute(self.configuration.borrow())
+    fn get_rec_area_links(&self, ) -> Result<(), Error> {
+        let configuration: &configuration::Configuration = self.configuration.borrow();
+        let client = &configuration.client;
+
+        let query_string = {
+            let mut query = ::url::form_urlencoded::Serializer::new(String::new());
+
+            query.finish()
+        };
+        let uri_str = format!("{}/recareas/{recAreaId}/links?{}", configuration.base_path, query_string);
+
+        let mut req_builder = client.get(uri_str.as_str());
+
+        if let Some(ref user_agent) = configuration.user_agent {
+            req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+        }
+
+
+        
+        if let Some(ref apikey) = configuration.api_key {
+            let key = apikey.key.clone();
+            let val = match apikey.prefix {
+                Some(ref prefix) => format!("{} {}", prefix, key),
+                None => key,
+            };
+            req_builder = req_builder.header("apikey", val);
+        };
+        
+
+
+        // send request
+        let req = req_builder.build()?;
+
+        client.execute(req)?.error_for_status()?;
+        Ok(())
     }
 
-    fn get_rec_area_media(&self, ) -> Box<Future<Item = (), Error = Error<serde_json::Value>>> {
-        __internal_request::Request::new(hyper::Method::Get, "/recareas/{recAreaId}/media/{mediaId}".to_string())
-            .with_auth(__internal_request::Auth::ApiKey(__internal_request::ApiKey{
-                in_header: true,
-                in_query: false,
-                param_name: "apikey".to_owned(),
-            }))
-            .returns_nothing()
-            .execute(self.configuration.borrow())
+    fn get_rec_area_media(&self, ) -> Result<(), Error> {
+        let configuration: &configuration::Configuration = self.configuration.borrow();
+        let client = &configuration.client;
+
+        let query_string = {
+            let mut query = ::url::form_urlencoded::Serializer::new(String::new());
+
+            query.finish()
+        };
+        let uri_str = format!("{}/recareas/{recAreaId}/media/{mediaId}?{}", configuration.base_path, query_string);
+
+        let mut req_builder = client.get(uri_str.as_str());
+
+        if let Some(ref user_agent) = configuration.user_agent {
+            req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+        }
+
+
+        
+        if let Some(ref apikey) = configuration.api_key {
+            let key = apikey.key.clone();
+            let val = match apikey.prefix {
+                Some(ref prefix) => format!("{} {}", prefix, key),
+                None => key,
+            };
+            req_builder = req_builder.header("apikey", val);
+        };
+        
+
+
+        // send request
+        let req = req_builder.build()?;
+
+        client.execute(req)?.error_for_status()?;
+        Ok(())
     }
 
-    fn get_rec_area_rec_area_address(&self, ) -> Box<Future<Item = (), Error = Error<serde_json::Value>>> {
-        __internal_request::Request::new(hyper::Method::Get, "/recareas/{recAreaId}/recareaaddresses/{recAreaAddressId}".to_string())
-            .with_auth(__internal_request::Auth::ApiKey(__internal_request::ApiKey{
-                in_header: true,
-                in_query: false,
-                param_name: "apikey".to_owned(),
-            }))
-            .returns_nothing()
-            .execute(self.configuration.borrow())
+    fn get_rec_area_rec_area_address(&self, ) -> Result<(), Error> {
+        let configuration: &configuration::Configuration = self.configuration.borrow();
+        let client = &configuration.client;
+
+        let query_string = {
+            let mut query = ::url::form_urlencoded::Serializer::new(String::new());
+
+            query.finish()
+        };
+        let uri_str = format!("{}/recareas/{recAreaId}/recareaaddresses/{recAreaAddressId}?{}", configuration.base_path, query_string);
+
+        let mut req_builder = client.get(uri_str.as_str());
+
+        if let Some(ref user_agent) = configuration.user_agent {
+            req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+        }
+
+
+        
+        if let Some(ref apikey) = configuration.api_key {
+            let key = apikey.key.clone();
+            let val = match apikey.prefix {
+                Some(ref prefix) => format!("{} {}", prefix, key),
+                None => key,
+            };
+            req_builder = req_builder.header("apikey", val);
+        };
+        
+
+
+        // send request
+        let req = req_builder.build()?;
+
+        client.execute(req)?.error_for_status()?;
+        Ok(())
     }
 
-    fn get_rec_area_rec_area_addresses(&self, ) -> Box<Future<Item = (), Error = Error<serde_json::Value>>> {
-        __internal_request::Request::new(hyper::Method::Get, "/recareas/{recAreaId}/recareaaddresses".to_string())
-            .with_auth(__internal_request::Auth::ApiKey(__internal_request::ApiKey{
-                in_header: true,
-                in_query: false,
-                param_name: "apikey".to_owned(),
-            }))
-            .returns_nothing()
-            .execute(self.configuration.borrow())
+    fn get_rec_area_rec_area_addresses(&self, ) -> Result<(), Error> {
+        let configuration: &configuration::Configuration = self.configuration.borrow();
+        let client = &configuration.client;
+
+        let query_string = {
+            let mut query = ::url::form_urlencoded::Serializer::new(String::new());
+
+            query.finish()
+        };
+        let uri_str = format!("{}/recareas/{recAreaId}/recareaaddresses?{}", configuration.base_path, query_string);
+
+        let mut req_builder = client.get(uri_str.as_str());
+
+        if let Some(ref user_agent) = configuration.user_agent {
+            req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+        }
+
+
+        
+        if let Some(ref apikey) = configuration.api_key {
+            let key = apikey.key.clone();
+            let val = match apikey.prefix {
+                Some(ref prefix) => format!("{} {}", prefix, key),
+                None => key,
+            };
+            req_builder = req_builder.header("apikey", val);
+        };
+        
+
+
+        // send request
+        let req = req_builder.build()?;
+
+        client.execute(req)?.error_for_status()?;
+        Ok(())
     }
 
-    fn get_tour(&self, tour_id: &str) -> Box<Future<Item = ::models::Tour, Error = Error<serde_json::Value>>> {
-        __internal_request::Request::new(hyper::Method::Get, "/tours/{tourId}".to_string())
-            .with_auth(__internal_request::Auth::ApiKey(__internal_request::ApiKey{
-                in_header: true,
-                in_query: false,
-                param_name: "apikey".to_owned(),
-            }))
-            .with_path_param("tourId".to_string(), tour_id.to_string())
-            .execute(self.configuration.borrow())
+    fn get_tour(&self, tour_id: &str) -> Result<::models::Tour, Error> {
+        let configuration: &configuration::Configuration = self.configuration.borrow();
+        let client = &configuration.client;
+
+        let query_string = {
+            let mut query = ::url::form_urlencoded::Serializer::new(String::new());
+
+            query.finish()
+        };
+        let uri_str = format!("{}/tours/{tourId}?{}", configuration.base_path, query_string, tourId=tour_id);
+
+        let mut req_builder = client.get(uri_str.as_str());
+
+        if let Some(ref user_agent) = configuration.user_agent {
+            req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+        }
+
+
+        
+        if let Some(ref apikey) = configuration.api_key {
+            let key = apikey.key.clone();
+            let val = match apikey.prefix {
+                Some(ref prefix) => format!("{} {}", prefix, key),
+                None => key,
+            };
+            req_builder = req_builder.header("apikey", val);
+        };
+        
+
+
+        // send request
+        let req = req_builder.build()?;
+
+        Ok(client.execute(req)?.error_for_status()?.json()?)
     }
 
 }

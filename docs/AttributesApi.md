@@ -4,8 +4,8 @@ All URIs are relative to *https://ridb.recreation.gov/api/v1*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**get_campsite_attributes**](AttributesApi.md#get_campsite_attributes) | **Get** /campsites/{campsiteId}/attributes | retrieve all attributes for a campsite
-[**get_tour_attributes**](AttributesApi.md#get_tour_attributes) | **Get** /tours/{tourId}/attributes | retrieve all attributes for a tour
+[**get_campsite_attributes**](AttributesApi.md#get_campsite_attributes) | **get** /campsites/{campsiteId}/attributes | retrieve all attributes for a campsite
+[**get_tour_attributes**](AttributesApi.md#get_tour_attributes) | **get** /tours/{tourId}/attributes | retrieve all attributes for a tour
 
 
 # **get_campsite_attributes**

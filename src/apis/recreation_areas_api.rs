@@ -11,19 +11,16 @@
 use std::rc::Rc;
 use std::borrow::Borrow;
 
-use hyper;
-use serde_json;
-use futures::Future;
+use reqwest;
 
 use super::{Error, configuration};
-use super::request as __internal_request;
 
-pub struct RecreationAreasApiClient<C: hyper::client::Connect> {
-    configuration: Rc<configuration::Configuration<C>>,
+pub struct RecreationAreasApiClient {
+    configuration: Rc<configuration::Configuration>,
 }
 
-impl<C: hyper::client::Connect> RecreationAreasApiClient<C> {
-    pub fn new(configuration: Rc<configuration::Configuration<C>>) -> RecreationAreasApiClient<C> {
+impl RecreationAreasApiClient {
+    pub fn new(configuration: Rc<configuration::Configuration>) -> RecreationAreasApiClient {
         RecreationAreasApiClient {
             configuration: configuration,
         }
@@ -31,27 +28,53 @@ impl<C: hyper::client::Connect> RecreationAreasApiClient<C> {
 }
 
 pub trait RecreationAreasApi {
-    fn get_rec_areas(&self, full: &str, state: Vec<String>, activity: Vec<String>, latitude: f64, longitude: f64, radius: f64, lastupdated: &str, sort: &str) -> Box<Future<Item = ::models::InlineResponse2001, Error = Error<serde_json::Value>>>;
+    fn get_rec_areas(&self, full: &str, state: Vec<String>, activity: Vec<String>, latitude: f64, longitude: f64, radius: f64, lastupdated: &str, sort: &str) -> Result<::models::InlineResponse2001, Error>;
 }
 
 
-impl<C: hyper::client::Connect>RecreationAreasApi for RecreationAreasApiClient<C> {
-    fn get_rec_areas(&self, full: &str, state: Vec<String>, activity: Vec<String>, latitude: f64, longitude: f64, radius: f64, lastupdated: &str, sort: &str) -> Box<Future<Item = ::models::InlineResponse2001, Error = Error<serde_json::Value>>> {
-        __internal_request::Request::new(hyper::Method::Get, "/recareas".to_string())
-            .with_auth(__internal_request::Auth::ApiKey(__internal_request::ApiKey{
-                in_header: true,
-                in_query: false,
-                param_name: "apikey".to_owned(),
-            }))
-            .with_query_param("full".to_string(), full.to_string())
-            .with_query_param("state".to_string(), state.join(",").to_string())
-            .with_query_param("activity".to_string(), activity.join(",").to_string())
-            .with_query_param("latitude".to_string(), latitude.to_string())
-            .with_query_param("longitude".to_string(), longitude.to_string())
-            .with_query_param("radius".to_string(), radius.to_string())
-            .with_query_param("lastupdated".to_string(), lastupdated.to_string())
-            .with_query_param("sort".to_string(), sort.to_string())
-            .execute(self.configuration.borrow())
+impl RecreationAreasApi for RecreationAreasApiClient {
+    fn get_rec_areas(&self, full: &str, state: Vec<String>, activity: Vec<String>, latitude: f64, longitude: f64, radius: f64, lastupdated: &str, sort: &str) -> Result<::models::InlineResponse2001, Error> {
+        let configuration: &configuration::Configuration = self.configuration.borrow();
+        let client = &configuration.client;
+
+        let query_string = {
+            let mut query = ::url::form_urlencoded::Serializer::new(String::new());
+            query.append_pair("full", &full.to_string());
+            query.append_pair("state", &state.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string());
+            query.append_pair("activity", &activity.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string());
+            query.append_pair("latitude", &latitude.to_string());
+            query.append_pair("longitude", &longitude.to_string());
+            query.append_pair("radius", &radius.to_string());
+            query.append_pair("lastupdated", &lastupdated.to_string());
+            query.append_pair("sort", &sort.to_string());
+
+            query.finish()
+        };
+        let uri_str = format!("{}/recareas?{}", configuration.base_path, query_string);
+
+        let mut req_builder = client.get(uri_str.as_str());
+
+        if let Some(ref user_agent) = configuration.user_agent {
+            req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+        }
+
+
+        
+        if let Some(ref apikey) = configuration.api_key {
+            let key = apikey.key.clone();
+            let val = match apikey.prefix {
+                Some(ref prefix) => format!("{} {}", prefix, key),
+                None => key,
+            };
+            req_builder = req_builder.header("apikey", val);
+        };
+        
+
+
+        // send request
+        let req = req_builder.build()?;
+
+        Ok(client.execute(req)?.error_for_status()?.json()?)
     }
 
 }

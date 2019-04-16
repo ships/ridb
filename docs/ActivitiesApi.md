@@ -4,7 +4,7 @@ All URIs are relative to *https://ridb.recreation.gov/api/v1*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**get_activities**](ActivitiesApi.md#get_activities) | **Get** /activities | retrieve all activities
+[**get_activities**](ActivitiesApi.md#get_activities) | **get** /activities | retrieve all activities
 
 
 # **get_activities**

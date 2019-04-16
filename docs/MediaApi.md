@@ -4,7 +4,7 @@ All URIs are relative to *https://ridb.recreation.gov/api/v1*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**get_all_media**](MediaApi.md#get_all_media) | **Get** /media | retrieve all media
+[**get_all_media**](MediaApi.md#get_all_media) | **get** /media | retrieve all media
 
 
 # **get_all_media**

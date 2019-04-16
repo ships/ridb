@@ -4,7 +4,7 @@ All URIs are relative to *https://ridb.recreation.gov/api/v1*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**get_permit_entrances**](PermitEntrancesApi.md#get_permit_entrances) | **Get** /permitentrances | retrieve all permit entrances
+[**get_permit_entrances**](PermitEntrancesApi.md#get_permit_entrances) | **get** /permitentrances | retrieve all permit entrances
 
 
 # **get_permit_entrances**

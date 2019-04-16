@@ -4,9 +4,9 @@ All URIs are relative to *https://ridb.recreation.gov/api/v1*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**get_facilities**](FacilitiesApi.md#get_facilities) | **Get** /facilities | retrieve all facilities
-[**get_organization_facilities**](FacilitiesApi.md#get_organization_facilities) | **Get** /organizations/{orgId}/facilities | retrieve all facilities for an organization
-[**get_rec_area_facilities**](FacilitiesApi.md#get_rec_area_facilities) | **Get** /recareas/{recAreaId}/facilities | retrieve all facilities for a recreation area
+[**get_facilities**](FacilitiesApi.md#get_facilities) | **get** /facilities | retrieve all facilities
+[**get_organization_facilities**](FacilitiesApi.md#get_organization_facilities) | **get** /organizations/{orgId}/facilities | retrieve all facilities for an organization
+[**get_rec_area_facilities**](FacilitiesApi.md#get_rec_area_facilities) | **get** /recareas/{recAreaId}/facilities | retrieve all facilities for a recreation area
 
 
 # **get_facilities**

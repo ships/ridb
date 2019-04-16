@@ -4,7 +4,7 @@ All URIs are relative to *https://ridb.recreation.gov/api/v1*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**get_rec_area_addresses**](RecreationAreaAddressesApi.md#get_rec_area_addresses) | **Get** /recareaaddresses | retrieve all recreation area addresses
+[**get_rec_area_addresses**](RecreationAreaAddressesApi.md#get_rec_area_addresses) | **get** /recareaaddresses | retrieve all recreation area addresses
 
 
 # **get_rec_area_addresses**

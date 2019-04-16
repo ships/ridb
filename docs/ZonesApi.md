@@ -4,8 +4,8 @@ All URIs are relative to *https://ridb.recreation.gov/api/v1*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**get_permit_entrance_zone**](ZonesApi.md#get_permit_entrance_zone) | **Get** /permitentrances/{permitEntranceId}/zones/{zoneId} | retrieve a zone for a permit entrance
-[**get_permit_entrance_zones**](ZonesApi.md#get_permit_entrance_zones) | **Get** /permitentrances/{permitEntranceId}/zones | retrieve all zones for a permit entrance
+[**get_permit_entrance_zone**](ZonesApi.md#get_permit_entrance_zone) | **get** /permitentrances/{permitEntranceId}/zones/{zoneId} | retrieve a zone for a permit entrance
+[**get_permit_entrance_zones**](ZonesApi.md#get_permit_entrance_zones) | **get** /permitentrances/{permitEntranceId}/zones | retrieve all zones for a permit entrance
 
 
 # **get_permit_entrance_zone**
