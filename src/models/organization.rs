@@ -31,11 +31,13 @@ pub struct Organization {
   #[serde(rename = "OrgJurisdictionType")]
   org_jurisdiction_type: String,
   #[serde(rename = "OrgParentID")]
-  org_parent_id: String
+  org_parent_id: String,
+  #[serde(rename = "LastUpdatedDate")]
+  last_updated_date: String
 }
 
 impl Organization {
-  pub fn new(org_id: String, org_name: String, org_image_url: String, org_url_text: String, org_url_address: String, org_type: String, org_abbrev_name: String, org_jurisdiction_type: String, org_parent_id: String) -> Organization {
+  pub fn new(org_id: String, org_name: String, org_image_url: String, org_url_text: String, org_url_address: String, org_type: String, org_abbrev_name: String, org_jurisdiction_type: String, org_parent_id: String, last_updated_date: String) -> Organization {
     Organization {
       org_id: org_id,
       org_name: org_name,
@@ -45,7 +47,8 @@ impl Organization {
       org_type: org_type,
       org_abbrev_name: org_abbrev_name,
       org_jurisdiction_type: org_jurisdiction_type,
-      org_parent_id: org_parent_id
+      org_parent_id: org_parent_id,
+      last_updated_date: last_updated_date
     }
   }
 
@@ -172,6 +175,20 @@ impl Organization {
 
   pub fn org_parent_id(&self) -> &String {
     &self.org_parent_id
+  }
+
+
+  pub fn set_last_updated_date(&mut self, last_updated_date: String) {
+    self.last_updated_date = last_updated_date;
+  }
+
+  pub fn with_last_updated_date(mut self, last_updated_date: String) -> Organization {
+    self.last_updated_date = last_updated_date;
+    self
+  }
+
+  pub fn last_updated_date(&self) -> &String {
+    &self.last_updated_date
   }
 
 

@@ -11,19 +11,16 @@
 use std::rc::Rc;
 use std::borrow::Borrow;
 
-use hyper;
-use serde_json;
-use futures::Future;
+use reqwest;
 
 use super::{Error, configuration};
-use super::request as __internal_request;
 
-pub struct ActivitiesApiClient<C: hyper::client::Connect> {
-    configuration: Rc<configuration::Configuration<C>>,
+pub struct ActivitiesApiClient {
+    configuration: Rc<configuration::Configuration>,
 }
 
-impl<C: hyper::client::Connect> ActivitiesApiClient<C> {
-    pub fn new(configuration: Rc<configuration::Configuration<C>>) -> ActivitiesApiClient<C> {
+impl ActivitiesApiClient {
+    pub fn new(configuration: Rc<configuration::Configuration>) -> ActivitiesApiClient {
         ActivitiesApiClient {
             configuration: configuration,
         }
@@ -31,19 +28,236 @@ impl<C: hyper::client::Connect> ActivitiesApiClient<C> {
 }
 
 pub trait ActivitiesApi {
-    fn get_activities(&self, ) -> Box<Future<Item = ::models::InlineResponse2008, Error = Error<serde_json::Value>>>;
+    fn get_activities(&self, limit: i32, offset: i32) -> Result<::models::InlineResponse2008, Error>;
+    fn get_activity(&self, activity_id: &str) -> Result<::models::Activity, Error>;
+    fn get_facility_activities(&self, facility_id: &str, limit: i32, offset: i32) -> Result<::models::InlineResponse2008, Error>;
+    fn get_facility_activity(&self, facility_id: &str, activity_id: &str) -> Result<::models::Activity, Error>;
+    fn get_rec_area_activities(&self, rec_area_id: &str, limit: i32, offset: i32) -> Result<::models::InlineResponse2008, Error>;
+    fn get_rec_area_activity(&self, rec_area_id: &str, activity_id: &str) -> Result<::models::Activity, Error>;
 }
 
 
-impl<C: hyper::client::Connect>ActivitiesApi for ActivitiesApiClient<C> {
-    fn get_activities(&self, ) -> Box<Future<Item = ::models::InlineResponse2008, Error = Error<serde_json::Value>>> {
-        __internal_request::Request::new(hyper::Method::Get, "/activities".to_string())
-            .with_auth(__internal_request::Auth::ApiKey(__internal_request::ApiKey{
-                in_header: true,
-                in_query: false,
-                param_name: "apikey".to_owned(),
-            }))
-            .execute(self.configuration.borrow())
+impl ActivitiesApi for ActivitiesApiClient {
+    fn get_activities(&self, limit: i32, offset: i32) -> Result<::models::InlineResponse2008, Error> {
+        let configuration: &configuration::Configuration = self.configuration.borrow();
+        let client = &configuration.client;
+
+        let query_string = {
+            let mut query = ::url::form_urlencoded::Serializer::new(String::new());
+            query.append_pair("limit", &limit.to_string());
+            query.append_pair("offset", &offset.to_string());
+
+            query.finish()
+        };
+        let uri_str = format!("{}/activities?{}", configuration.base_path, query_string);
+
+        let mut req_builder = client.get(uri_str.as_str());
+
+        if let Some(ref user_agent) = configuration.user_agent {
+            req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+        }
+
+
+        
+        if let Some(ref apikey) = configuration.api_key {
+            let key = apikey.key.clone();
+            let val = match apikey.prefix {
+                Some(ref prefix) => format!("{} {}", prefix, key),
+                None => key,
+            };
+            req_builder = req_builder.header("apikey", val);
+        };
+        
+
+
+        // send request
+        let req = req_builder.build()?;
+
+        Ok(client.execute(req)?.error_for_status()?.json()?)
+    }
+
+    fn get_activity(&self, activity_id: &str) -> Result<::models::Activity, Error> {
+        let configuration: &configuration::Configuration = self.configuration.borrow();
+        let client = &configuration.client;
+
+        let query_string = {
+            let mut query = ::url::form_urlencoded::Serializer::new(String::new());
+
+            query.finish()
+        };
+        let uri_str = format!("{}/activities/{activityId}?{}", configuration.base_path, query_string, activityId=activity_id);
+
+        let mut req_builder = client.get(uri_str.as_str());
+
+        if let Some(ref user_agent) = configuration.user_agent {
+            req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+        }
+
+
+        
+        if let Some(ref apikey) = configuration.api_key {
+            let key = apikey.key.clone();
+            let val = match apikey.prefix {
+                Some(ref prefix) => format!("{} {}", prefix, key),
+                None => key,
+            };
+            req_builder = req_builder.header("apikey", val);
+        };
+        
+
+
+        // send request
+        let req = req_builder.build()?;
+
+        Ok(client.execute(req)?.error_for_status()?.json()?)
+    }
+
+    fn get_facility_activities(&self, facility_id: &str, limit: i32, offset: i32) -> Result<::models::InlineResponse2008, Error> {
+        let configuration: &configuration::Configuration = self.configuration.borrow();
+        let client = &configuration.client;
+
+        let query_string = {
+            let mut query = ::url::form_urlencoded::Serializer::new(String::new());
+            query.append_pair("limit", &limit.to_string());
+            query.append_pair("offset", &offset.to_string());
+
+            query.finish()
+        };
+        let uri_str = format!("{}/facilities/{facilityId}/activities?{}", configuration.base_path, query_string, facilityId=facility_id);
+
+        let mut req_builder = client.get(uri_str.as_str());
+
+        if let Some(ref user_agent) = configuration.user_agent {
+            req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+        }
+
+
+        
+        if let Some(ref apikey) = configuration.api_key {
+            let key = apikey.key.clone();
+            let val = match apikey.prefix {
+                Some(ref prefix) => format!("{} {}", prefix, key),
+                None => key,
+            };
+            req_builder = req_builder.header("apikey", val);
+        };
+        
+
+
+        // send request
+        let req = req_builder.build()?;
+
+        Ok(client.execute(req)?.error_for_status()?.json()?)
+    }
+
+    fn get_facility_activity(&self, facility_id: &str, activity_id: &str) -> Result<::models::Activity, Error> {
+        let configuration: &configuration::Configuration = self.configuration.borrow();
+        let client = &configuration.client;
+
+        let query_string = {
+            let mut query = ::url::form_urlencoded::Serializer::new(String::new());
+
+            query.finish()
+        };
+        let uri_str = format!("{}/facilities/{facilityId}/activities/{activityId}?{}", configuration.base_path, query_string, facilityId=facility_id, activityId=activity_id);
+
+        let mut req_builder = client.get(uri_str.as_str());
+
+        if let Some(ref user_agent) = configuration.user_agent {
+            req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+        }
+
+
+        
+        if let Some(ref apikey) = configuration.api_key {
+            let key = apikey.key.clone();
+            let val = match apikey.prefix {
+                Some(ref prefix) => format!("{} {}", prefix, key),
+                None => key,
+            };
+            req_builder = req_builder.header("apikey", val);
+        };
+        
+
+
+        // send request
+        let req = req_builder.build()?;
+
+        Ok(client.execute(req)?.error_for_status()?.json()?)
+    }
+
+    fn get_rec_area_activities(&self, rec_area_id: &str, limit: i32, offset: i32) -> Result<::models::InlineResponse2008, Error> {
+        let configuration: &configuration::Configuration = self.configuration.borrow();
+        let client = &configuration.client;
+
+        let query_string = {
+            let mut query = ::url::form_urlencoded::Serializer::new(String::new());
+            query.append_pair("limit", &limit.to_string());
+            query.append_pair("offset", &offset.to_string());
+
+            query.finish()
+        };
+        let uri_str = format!("{}/recareas/{recAreaId}/activities?{}", configuration.base_path, query_string, recAreaId=rec_area_id);
+
+        let mut req_builder = client.get(uri_str.as_str());
+
+        if let Some(ref user_agent) = configuration.user_agent {
+            req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+        }
+
+
+        
+        if let Some(ref apikey) = configuration.api_key {
+            let key = apikey.key.clone();
+            let val = match apikey.prefix {
+                Some(ref prefix) => format!("{} {}", prefix, key),
+                None => key,
+            };
+            req_builder = req_builder.header("apikey", val);
+        };
+        
+
+
+        // send request
+        let req = req_builder.build()?;
+
+        Ok(client.execute(req)?.error_for_status()?.json()?)
+    }
+
+    fn get_rec_area_activity(&self, rec_area_id: &str, activity_id: &str) -> Result<::models::Activity, Error> {
+        let configuration: &configuration::Configuration = self.configuration.borrow();
+        let client = &configuration.client;
+
+        let query_string = {
+            let mut query = ::url::form_urlencoded::Serializer::new(String::new());
+
+            query.finish()
+        };
+        let uri_str = format!("{}/recareas/{recAreaId}/activities/{activityId}?{}", configuration.base_path, query_string, recAreaId=rec_area_id, activityId=activity_id);
+
+        let mut req_builder = client.get(uri_str.as_str());
+
+        if let Some(ref user_agent) = configuration.user_agent {
+            req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+        }
+
+
+        
+        if let Some(ref apikey) = configuration.api_key {
+            let key = apikey.key.clone();
+            let val = match apikey.prefix {
+                Some(ref prefix) => format!("{} {}", prefix, key),
+                None => key,
+            };
+            req_builder = req_builder.header("apikey", val);
+        };
+        
+
+
+        // send request
+        let req = req_builder.build()?;
+
+        Ok(client.execute(req)?.error_for_status()?.json()?)
     }
 
 }

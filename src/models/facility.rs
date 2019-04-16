@@ -58,6 +58,8 @@ pub struct Facility {
   reservable: bool,
   #[serde(rename = "Enabled")]
   enabled: bool,
+  #[serde(rename = "LastUpdatedDate")]
+  last_updated_date: String,
   #[serde(rename = "CAMPSITE")]
   CAMPSITE: Option<Vec<::models::FacilityCampsite>>,
   #[serde(rename = "PERMITENTRANCE")]
@@ -81,7 +83,7 @@ pub struct Facility {
 }
 
 impl Facility {
-  pub fn new(facility_id: String, legacy_facility_id: String, org_facility_id: String, facility_name: String, facility_description: String, facility_type_description: String, facility_use_fee_description: String, facility_directions: String, facility_phone: String, facility_email: String, facility_reservation_url: String, facility_map_url: String, facility_ada_access: String, GEOJSON: ::models::FacilityGeojson, facility_longitude: f64, facility_latitude: f64, stay_limit: String, keywords: String, reservable: bool, enabled: bool) -> Facility {
+  pub fn new(facility_id: String, legacy_facility_id: String, org_facility_id: String, facility_name: String, facility_description: String, facility_type_description: String, facility_use_fee_description: String, facility_directions: String, facility_phone: String, facility_email: String, facility_reservation_url: String, facility_map_url: String, facility_ada_access: String, GEOJSON: ::models::FacilityGeojson, facility_longitude: f64, facility_latitude: f64, stay_limit: String, keywords: String, reservable: bool, enabled: bool, last_updated_date: String) -> Facility {
     Facility {
       facility_id: facility_id,
       legacy_facility_id: legacy_facility_id,
@@ -105,6 +107,7 @@ impl Facility {
       keywords: keywords,
       reservable: reservable,
       enabled: enabled,
+      last_updated_date: last_updated_date,
       CAMPSITE: None,
       PERMITENTRANCE: None,
       TOUR: None,
@@ -429,6 +432,20 @@ impl Facility {
 
   pub fn enabled(&self) -> &bool {
     &self.enabled
+  }
+
+
+  pub fn set_last_updated_date(&mut self, last_updated_date: String) {
+    self.last_updated_date = last_updated_date;
+  }
+
+  pub fn with_last_updated_date(mut self, last_updated_date: String) -> Facility {
+    self.last_updated_date = last_updated_date;
+    self
+  }
+
+  pub fn last_updated_date(&self) -> &String {
+    &self.last_updated_date
   }
 
 

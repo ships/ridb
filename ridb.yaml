@@ -1076,6 +1076,7 @@ paths:
       description: This endpoint retrieves a specific recreation area belonging to a specific organization.
       operationId: getOrganizationRecArea
       parameters:
+        - *OrgIDParam
         - *RecAreaIDParam
         - *FullParam
       responses:
@@ -1457,7 +1458,7 @@ paths:
                     items:
                       $ref: '#/components/schemas/Permit Entrance'
                   <<: *SearchResponseProperties
-  /permitentrances/{permitentranceId}:
+  /permitentrances/{permitEntranceId}:
     get:
       tags: *PermitEntranceTags
       summary: retrieve a specific permit entrance by id

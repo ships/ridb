@@ -12,6 +12,7 @@ Name | Type | Description | Notes
 **org_abbrev_name** | **String** |  | 
 **org_jurisdiction_type** | **String** |  | 
 **org_parent_id** | **String** |  | 
+**last_updated_date** | [***String**](string.md) |  | 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

@@ -17,14 +17,17 @@ pub struct FacilityTour {
   #[serde(rename = "TourID")]
   tour_id: String,
   #[serde(rename = "TourName")]
-  tour_name: String
+  tour_name: String,
+  #[serde(rename = "ResourceLink")]
+  resource_link: String
 }
 
 impl FacilityTour {
-  pub fn new(tour_id: String, tour_name: String) -> FacilityTour {
+  pub fn new(tour_id: String, tour_name: String, resource_link: String) -> FacilityTour {
     FacilityTour {
       tour_id: tour_id,
-      tour_name: tour_name
+      tour_name: tour_name,
+      resource_link: resource_link
     }
   }
 
@@ -53,6 +56,20 @@ impl FacilityTour {
 
   pub fn tour_name(&self) -> &String {
     &self.tour_name
+  }
+
+
+  pub fn set_resource_link(&mut self, resource_link: String) {
+    self.resource_link = resource_link;
+  }
+
+  pub fn with_resource_link(mut self, resource_link: String) -> FacilityTour {
+    self.resource_link = resource_link;
+    self
+  }
+
+  pub fn resource_link(&self) -> &String {
+    &self.resource_link
   }
 
 

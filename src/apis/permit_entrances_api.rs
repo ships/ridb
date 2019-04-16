@@ -11,19 +11,16 @@
 use std::rc::Rc;
 use std::borrow::Borrow;
 
-use hyper;
-use serde_json;
-use futures::Future;
+use reqwest;
 
 use super::{Error, configuration};
-use super::request as __internal_request;
 
-pub struct PermitEntrancesApiClient<C: hyper::client::Connect> {
-    configuration: Rc<configuration::Configuration<C>>,
+pub struct PermitEntrancesApiClient {
+    configuration: Rc<configuration::Configuration>,
 }
 
-impl<C: hyper::client::Connect> PermitEntrancesApiClient<C> {
-    pub fn new(configuration: Rc<configuration::Configuration<C>>) -> PermitEntrancesApiClient<C> {
+impl PermitEntrancesApiClient {
+    pub fn new(configuration: Rc<configuration::Configuration>) -> PermitEntrancesApiClient {
         PermitEntrancesApiClient {
             configuration: configuration,
         }
@@ -31,19 +28,160 @@ impl<C: hyper::client::Connect> PermitEntrancesApiClient<C> {
 }
 
 pub trait PermitEntrancesApi {
-    fn get_permit_entrances(&self, ) -> Box<Future<Item = ::models::InlineResponse2006, Error = Error<serde_json::Value>>>;
+    fn get_facility_permit_entrance(&self, facility_id: &str, permit_entrance_id: &str) -> Result<::models::PermitEntrance, Error>;
+    fn get_facility_permit_entrances(&self, facility_id: &str, limit: i32, offset: i32) -> Result<::models::InlineResponse2006, Error>;
+    fn get_permit_entrance(&self, permit_entrance_id: &str) -> Result<::models::PermitEntrance, Error>;
+    fn get_permit_entrances(&self, limit: i32, offset: i32) -> Result<::models::InlineResponse2006, Error>;
 }
 
 
-impl<C: hyper::client::Connect>PermitEntrancesApi for PermitEntrancesApiClient<C> {
-    fn get_permit_entrances(&self, ) -> Box<Future<Item = ::models::InlineResponse2006, Error = Error<serde_json::Value>>> {
-        __internal_request::Request::new(hyper::Method::Get, "/permitentrances".to_string())
-            .with_auth(__internal_request::Auth::ApiKey(__internal_request::ApiKey{
-                in_header: true,
-                in_query: false,
-                param_name: "apikey".to_owned(),
-            }))
-            .execute(self.configuration.borrow())
+impl PermitEntrancesApi for PermitEntrancesApiClient {
+    fn get_facility_permit_entrance(&self, facility_id: &str, permit_entrance_id: &str) -> Result<::models::PermitEntrance, Error> {
+        let configuration: &configuration::Configuration = self.configuration.borrow();
+        let client = &configuration.client;
+
+        let query_string = {
+            let mut query = ::url::form_urlencoded::Serializer::new(String::new());
+
+            query.finish()
+        };
+        let uri_str = format!("{}/facilities/{facilityId}/permitentrances/{permitEntranceId}?{}", configuration.base_path, query_string, facilityId=facility_id, permitEntranceId=permit_entrance_id);
+
+        let mut req_builder = client.get(uri_str.as_str());
+
+        if let Some(ref user_agent) = configuration.user_agent {
+            req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+        }
+
+
+        
+        if let Some(ref apikey) = configuration.api_key {
+            let key = apikey.key.clone();
+            let val = match apikey.prefix {
+                Some(ref prefix) => format!("{} {}", prefix, key),
+                None => key,
+            };
+            req_builder = req_builder.header("apikey", val);
+        };
+        
+
+
+        // send request
+        let req = req_builder.build()?;
+
+        Ok(client.execute(req)?.error_for_status()?.json()?)
+    }
+
+    fn get_facility_permit_entrances(&self, facility_id: &str, limit: i32, offset: i32) -> Result<::models::InlineResponse2006, Error> {
+        let configuration: &configuration::Configuration = self.configuration.borrow();
+        let client = &configuration.client;
+
+        let query_string = {
+            let mut query = ::url::form_urlencoded::Serializer::new(String::new());
+            query.append_pair("limit", &limit.to_string());
+            query.append_pair("offset", &offset.to_string());
+
+            query.finish()
+        };
+        let uri_str = format!("{}/facilities/{facilityId}/permitentrances?{}", configuration.base_path, query_string, facilityId=facility_id);
+
+        let mut req_builder = client.get(uri_str.as_str());
+
+        if let Some(ref user_agent) = configuration.user_agent {
+            req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+        }
+
+
+        
+        if let Some(ref apikey) = configuration.api_key {
+            let key = apikey.key.clone();
+            let val = match apikey.prefix {
+                Some(ref prefix) => format!("{} {}", prefix, key),
+                None => key,
+            };
+            req_builder = req_builder.header("apikey", val);
+        };
+        
+
+
+        // send request
+        let req = req_builder.build()?;
+
+        Ok(client.execute(req)?.error_for_status()?.json()?)
+    }
+
+    fn get_permit_entrance(&self, permit_entrance_id: &str) -> Result<::models::PermitEntrance, Error> {
+        let configuration: &configuration::Configuration = self.configuration.borrow();
+        let client = &configuration.client;
+
+        let query_string = {
+            let mut query = ::url::form_urlencoded::Serializer::new(String::new());
+
+            query.finish()
+        };
+        let uri_str = format!("{}/permitentrances/{permitEntranceId}?{}", configuration.base_path, query_string, permitEntranceId=permit_entrance_id);
+
+        let mut req_builder = client.get(uri_str.as_str());
+
+        if let Some(ref user_agent) = configuration.user_agent {
+            req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+        }
+
+
+        
+        if let Some(ref apikey) = configuration.api_key {
+            let key = apikey.key.clone();
+            let val = match apikey.prefix {
+                Some(ref prefix) => format!("{} {}", prefix, key),
+                None => key,
+            };
+            req_builder = req_builder.header("apikey", val);
+        };
+        
+
+
+        // send request
+        let req = req_builder.build()?;
+
+        Ok(client.execute(req)?.error_for_status()?.json()?)
+    }
+
+    fn get_permit_entrances(&self, limit: i32, offset: i32) -> Result<::models::InlineResponse2006, Error> {
+        let configuration: &configuration::Configuration = self.configuration.borrow();
+        let client = &configuration.client;
+
+        let query_string = {
+            let mut query = ::url::form_urlencoded::Serializer::new(String::new());
+            query.append_pair("limit", &limit.to_string());
+            query.append_pair("offset", &offset.to_string());
+
+            query.finish()
+        };
+        let uri_str = format!("{}/permitentrances?{}", configuration.base_path, query_string);
+
+        let mut req_builder = client.get(uri_str.as_str());
+
+        if let Some(ref user_agent) = configuration.user_agent {
+            req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+        }
+
+
+        
+        if let Some(ref apikey) = configuration.api_key {
+            let key = apikey.key.clone();
+            let val = match apikey.prefix {
+                Some(ref prefix) => format!("{} {}", prefix, key),
+                None => key,
+            };
+            req_builder = req_builder.header("apikey", val);
+        };
+        
+
+
+        // send request
+        let req = req_builder.build()?;
+
+        Ok(client.execute(req)?.error_for_status()?.json()?)
     }
 
 }

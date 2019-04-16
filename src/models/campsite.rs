@@ -32,6 +32,8 @@ pub struct Campsite {
   campsite_latitude: Option<f64>,
   #[serde(rename = "CreatedDate")]
   created_date: String,
+  #[serde(rename = "LastUpdatedDate")]
+  last_updated_date: String,
   #[serde(rename = "ATTRIBUTES")]
   ATTRIBUTES: Vec<::models::Attribute>,
   #[serde(rename = "PERMITTEDEQUIPMENT")]
@@ -41,7 +43,7 @@ pub struct Campsite {
 }
 
 impl Campsite {
-  pub fn new(campsite_id: String, facility_id: String, campsite_name: String, campsite_type: String, type_of_use: String, campsite_accessible: bool, created_date: String, ATTRIBUTES: Vec<::models::Attribute>, PERMITTEDEQUIPMENT: Vec<::models::PermittedEquipment>, ENTITYMEDIA: Vec<::models::Media>) -> Campsite {
+  pub fn new(campsite_id: String, facility_id: String, campsite_name: String, campsite_type: String, type_of_use: String, campsite_accessible: bool, created_date: String, last_updated_date: String, ATTRIBUTES: Vec<::models::Attribute>, PERMITTEDEQUIPMENT: Vec<::models::PermittedEquipment>, ENTITYMEDIA: Vec<::models::Media>) -> Campsite {
     Campsite {
       campsite_id: campsite_id,
       facility_id: facility_id,
@@ -52,6 +54,7 @@ impl Campsite {
       campsite_longitude: None,
       campsite_latitude: None,
       created_date: created_date,
+      last_updated_date: last_updated_date,
       ATTRIBUTES: ATTRIBUTES,
       PERMITTEDEQUIPMENT: PERMITTEDEQUIPMENT,
       ENTITYMEDIA: ENTITYMEDIA
@@ -187,6 +190,20 @@ impl Campsite {
 
   pub fn created_date(&self) -> &String {
     &self.created_date
+  }
+
+
+  pub fn set_last_updated_date(&mut self, last_updated_date: String) {
+    self.last_updated_date = last_updated_date;
+  }
+
+  pub fn with_last_updated_date(mut self, last_updated_date: String) -> Campsite {
+    self.last_updated_date = last_updated_date;
+    self
+  }
+
+  pub fn last_updated_date(&self) -> &String {
+    &self.last_updated_date
   }
 
 

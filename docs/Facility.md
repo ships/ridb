@@ -25,6 +25,7 @@ Name | Type | Description | Notes
 **keywords** | **String** |  | 
 **reservable** | **bool** |  | 
 **enabled** | **bool** |  | 
+**last_updated_date** | [***String**](string.md) |  | 
 **CAMPSITE** | [**Vec<::models::FacilityCampsite>**](Facility Campsite.md) |  | [optional] 
 **PERMITENTRANCE** | [**Vec<::models::FacilityPermitEntrance>**](Facility Permit Entrance.md) |  | [optional] 
 **TOUR** | [**Vec<::models::FacilityTour>**](Facility Tour.md) |  | [optional] 
