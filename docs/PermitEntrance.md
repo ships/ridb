@@ -12,7 +12,7 @@ Name | Type | Description | Notes
 **permit_entrance_accessible** | **bool** |  | 
 **longitude** | **f64** |  | 
 **latitude** | **f64** |  | 
-**GEOSJON** | [***::models::FacilityGeojson**](Facility_GEOJSON.md) |  | [optional] 
+**GEOJSON** | [***::models::FacilityGeojson**](Facility_GEOJSON.md) |  | 
 **created_date** | [***String**](string.md) |  | 
 **last_updated_date** | [***String**](string.md) |  | 
 **ATTRIBUTES** | [**Vec<::models::Attribute>**](Attribute.md) |  | 

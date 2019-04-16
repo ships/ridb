@@ -32,8 +32,8 @@ pub struct PermitEntrance {
   longitude: f64,
   #[serde(rename = "Latitude")]
   latitude: f64,
-  #[serde(rename = "GEOSJON")]
-  GEOSJON: Option<::models::FacilityGeojson>,
+  #[serde(rename = "GEOJSON")]
+  GEOJSON: ::models::FacilityGeojson,
   #[serde(rename = "CreatedDate")]
   created_date: String,
   #[serde(rename = "LastUpdatedDate")]
@@ -47,7 +47,7 @@ pub struct PermitEntrance {
 }
 
 impl PermitEntrance {
-  pub fn new(permit_entrance_id: String, facility_id: String, permit_entrance_name: String, permit_entrance_description: String, district: String, town: String, permit_entrance_accessible: bool, longitude: f64, latitude: f64, created_date: String, last_updated_date: String, ATTRIBUTES: Vec<::models::Attribute>, ENTITYMEDIA: Vec<::models::Media>, ZONES: Vec<::models::Zone>) -> PermitEntrance {
+  pub fn new(permit_entrance_id: String, facility_id: String, permit_entrance_name: String, permit_entrance_description: String, district: String, town: String, permit_entrance_accessible: bool, longitude: f64, latitude: f64, GEOJSON: ::models::FacilityGeojson, created_date: String, last_updated_date: String, ATTRIBUTES: Vec<::models::Attribute>, ENTITYMEDIA: Vec<::models::Media>, ZONES: Vec<::models::Zone>) -> PermitEntrance {
     PermitEntrance {
       permit_entrance_id: permit_entrance_id,
       facility_id: facility_id,
@@ -58,7 +58,7 @@ impl PermitEntrance {
       permit_entrance_accessible: permit_entrance_accessible,
       longitude: longitude,
       latitude: latitude,
-      GEOSJON: None,
+      GEOJSON: GEOJSON,
       created_date: created_date,
       last_updated_date: last_updated_date,
       ATTRIBUTES: ATTRIBUTES,
@@ -193,22 +193,19 @@ impl PermitEntrance {
   }
 
 
-  pub fn set_GEOSJON(&mut self, GEOSJON: ::models::FacilityGeojson) {
-    self.GEOSJON = Some(GEOSJON);
+  pub fn set_GEOJSON(&mut self, GEOJSON: ::models::FacilityGeojson) {
+    self.GEOJSON = GEOJSON;
   }
 
-  pub fn with_GEOSJON(mut self, GEOSJON: ::models::FacilityGeojson) -> PermitEntrance {
-    self.GEOSJON = Some(GEOSJON);
+  pub fn with_GEOJSON(mut self, GEOJSON: ::models::FacilityGeojson) -> PermitEntrance {
+    self.GEOJSON = GEOJSON;
     self
   }
 
-  pub fn GEOSJON(&self) -> Option<&::models::FacilityGeojson> {
-    self.GEOSJON.as_ref()
+  pub fn GEOJSON(&self) -> &::models::FacilityGeojson {
+    &self.GEOJSON
   }
 
-  pub fn reset_GEOSJON(&mut self) {
-    self.GEOSJON = None;
-  }
 
   pub fn set_created_date(&mut self, created_date: String) {
     self.created_date = created_date;

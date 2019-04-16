@@ -569,7 +569,7 @@ components:
         Latitude:
           type: number
           format: double
-        GEOSJON: *GEOJSON
+        GEOJSON: *GEOJSON
         CreatedDate: *LastUpdateDate
         LastUpdatedDate: *LastUpdateDate
         ATTRIBUTES: *Attributes
