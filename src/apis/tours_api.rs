@@ -28,17 +28,132 @@ impl ToursApiClient {
 }
 
 pub trait ToursApi {
-    fn get_tours(&self, ) -> Result<::models::InlineResponse2007, Error>;
+    fn get_facility_tour(&self, facility_id: &str, tour_id: &str) -> Result<::models::Tour, Error>;
+    fn get_facility_tours(&self, facility_id: &str, limit: i32, offset: i32) -> Result<::models::InlineResponse2007, Error>;
+    fn get_tour(&self, tour_id: &str) -> Result<::models::Tour, Error>;
+    fn get_tours(&self, limit: i32, offset: i32) -> Result<::models::InlineResponse2007, Error>;
 }
 
 
 impl ToursApi for ToursApiClient {
-    fn get_tours(&self, ) -> Result<::models::InlineResponse2007, Error> {
+    fn get_facility_tour(&self, facility_id: &str, tour_id: &str) -> Result<::models::Tour, Error> {
         let configuration: &configuration::Configuration = self.configuration.borrow();
         let client = &configuration.client;
 
         let query_string = {
             let mut query = ::url::form_urlencoded::Serializer::new(String::new());
+
+            query.finish()
+        };
+        let uri_str = format!("{}/facilities/{facilityId}/tours/{tourId}?{}", configuration.base_path, query_string, facilityId=facility_id, tourId=tour_id);
+
+        let mut req_builder = client.get(uri_str.as_str());
+
+        if let Some(ref user_agent) = configuration.user_agent {
+            req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+        }
+
+
+        
+        if let Some(ref apikey) = configuration.api_key {
+            let key = apikey.key.clone();
+            let val = match apikey.prefix {
+                Some(ref prefix) => format!("{} {}", prefix, key),
+                None => key,
+            };
+            req_builder = req_builder.header("apikey", val);
+        };
+        
+
+
+        // send request
+        let req = req_builder.build()?;
+
+        Ok(client.execute(req)?.error_for_status()?.json()?)
+    }
+
+    fn get_facility_tours(&self, facility_id: &str, limit: i32, offset: i32) -> Result<::models::InlineResponse2007, Error> {
+        let configuration: &configuration::Configuration = self.configuration.borrow();
+        let client = &configuration.client;
+
+        let query_string = {
+            let mut query = ::url::form_urlencoded::Serializer::new(String::new());
+            query.append_pair("limit", &limit.to_string());
+            query.append_pair("offset", &offset.to_string());
+
+            query.finish()
+        };
+        let uri_str = format!("{}/facilities/{facilityId}/tours?{}", configuration.base_path, query_string, facilityId=facility_id);
+
+        let mut req_builder = client.get(uri_str.as_str());
+
+        if let Some(ref user_agent) = configuration.user_agent {
+            req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+        }
+
+
+        
+        if let Some(ref apikey) = configuration.api_key {
+            let key = apikey.key.clone();
+            let val = match apikey.prefix {
+                Some(ref prefix) => format!("{} {}", prefix, key),
+                None => key,
+            };
+            req_builder = req_builder.header("apikey", val);
+        };
+        
+
+
+        // send request
+        let req = req_builder.build()?;
+
+        Ok(client.execute(req)?.error_for_status()?.json()?)
+    }
+
+    fn get_tour(&self, tour_id: &str) -> Result<::models::Tour, Error> {
+        let configuration: &configuration::Configuration = self.configuration.borrow();
+        let client = &configuration.client;
+
+        let query_string = {
+            let mut query = ::url::form_urlencoded::Serializer::new(String::new());
+
+            query.finish()
+        };
+        let uri_str = format!("{}/tours/{tourId}?{}", configuration.base_path, query_string, tourId=tour_id);
+
+        let mut req_builder = client.get(uri_str.as_str());
+
+        if let Some(ref user_agent) = configuration.user_agent {
+            req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+        }
+
+
+        
+        if let Some(ref apikey) = configuration.api_key {
+            let key = apikey.key.clone();
+            let val = match apikey.prefix {
+                Some(ref prefix) => format!("{} {}", prefix, key),
+                None => key,
+            };
+            req_builder = req_builder.header("apikey", val);
+        };
+        
+
+
+        // send request
+        let req = req_builder.build()?;
+
+        Ok(client.execute(req)?.error_for_status()?.json()?)
+    }
+
+    fn get_tours(&self, limit: i32, offset: i32) -> Result<::models::InlineResponse2007, Error> {
+        let configuration: &configuration::Configuration = self.configuration.borrow();
+        let client = &configuration.client;
+
+        let query_string = {
+            let mut query = ::url::form_urlencoded::Serializer::new(String::new());
+            query.append_pair("limit", &limit.to_string());
+            query.append_pair("offset", &offset.to_string());
 
             query.finish()
         };

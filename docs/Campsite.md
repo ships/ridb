@@ -12,6 +12,7 @@ Name | Type | Description | Notes
 **campsite_longitude** | **f64** |  | [optional] 
 **campsite_latitude** | **f64** |  | [optional] 
 **created_date** | [***String**](string.md) |  | 
+**last_updated_date** | [***String**](string.md) |  | 
 **ATTRIBUTES** | [**Vec<::models::Attribute>**](Attribute.md) |  | 
 **PERMITTEDEQUIPMENT** | [**Vec<::models::PermittedEquipment>**](Permitted Equipment.md) |  | 
 **ENTITYMEDIA** | [**Vec<::models::Media>**](Media.md) |  | 

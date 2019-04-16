@@ -33,11 +33,13 @@ pub struct RecreationAreaAddress {
   #[serde(rename = "AddressStateCode")]
   address_state_code: String,
   #[serde(rename = "AddressCountryCode")]
-  address_country_code: String
+  address_country_code: String,
+  #[serde(rename = "LastUpdatedDate")]
+  last_updated_date: String
 }
 
 impl RecreationAreaAddress {
-  pub fn new(rec_area_address_id: String, rec_area_id: String, rec_area_address_type: String, rec_area_street_address1: String, rec_area_street_address2: String, rec_area_street_address3: String, city: String, postal_code: String, address_state_code: String, address_country_code: String) -> RecreationAreaAddress {
+  pub fn new(rec_area_address_id: String, rec_area_id: String, rec_area_address_type: String, rec_area_street_address1: String, rec_area_street_address2: String, rec_area_street_address3: String, city: String, postal_code: String, address_state_code: String, address_country_code: String, last_updated_date: String) -> RecreationAreaAddress {
     RecreationAreaAddress {
       rec_area_address_id: rec_area_address_id,
       rec_area_id: rec_area_id,
@@ -48,7 +50,8 @@ impl RecreationAreaAddress {
       city: city,
       postal_code: postal_code,
       address_state_code: address_state_code,
-      address_country_code: address_country_code
+      address_country_code: address_country_code,
+      last_updated_date: last_updated_date
     }
   }
 
@@ -189,6 +192,20 @@ impl RecreationAreaAddress {
 
   pub fn address_country_code(&self) -> &String {
     &self.address_country_code
+  }
+
+
+  pub fn set_last_updated_date(&mut self, last_updated_date: String) {
+    self.last_updated_date = last_updated_date;
+  }
+
+  pub fn with_last_updated_date(mut self, last_updated_date: String) -> RecreationAreaAddress {
+    self.last_updated_date = last_updated_date;
+    self
+  }
+
+  pub fn last_updated_date(&self) -> &String {
+    &self.last_updated_date
   }
 
 

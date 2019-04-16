@@ -17,14 +17,17 @@ pub struct FacilityRecArea {
   #[serde(rename = "RecAreaID")]
   rec_area_id: String,
   #[serde(rename = "RecAreaName")]
-  rec_area_name: String
+  rec_area_name: String,
+  #[serde(rename = "ResourceLink")]
+  resource_link: String
 }
 
 impl FacilityRecArea {
-  pub fn new(rec_area_id: String, rec_area_name: String) -> FacilityRecArea {
+  pub fn new(rec_area_id: String, rec_area_name: String, resource_link: String) -> FacilityRecArea {
     FacilityRecArea {
       rec_area_id: rec_area_id,
-      rec_area_name: rec_area_name
+      rec_area_name: rec_area_name,
+      resource_link: resource_link
     }
   }
 
@@ -53,6 +56,20 @@ impl FacilityRecArea {
 
   pub fn rec_area_name(&self) -> &String {
     &self.rec_area_name
+  }
+
+
+  pub fn set_resource_link(&mut self, resource_link: String) {
+    self.resource_link = resource_link;
+  }
+
+  pub fn with_resource_link(mut self, resource_link: String) -> FacilityRecArea {
+    self.resource_link = resource_link;
+    self
+  }
+
+  pub fn resource_link(&self) -> &String {
+    &self.resource_link
   }
 
 

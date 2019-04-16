@@ -27,8 +27,6 @@ mod attributes_api;
 pub use self::attributes_api::{ AttributesApi, AttributesApiClient };
 mod campsites_api;
 pub use self::campsites_api::{ CampsitesApi, CampsitesApiClient };
-mod default_api;
-pub use self::default_api::{ DefaultApi, DefaultApiClient };
 mod events_api;
 pub use self::events_api::{ EventsApi, EventsApiClient };
 mod facilities_api;

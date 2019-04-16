@@ -28,12 +28,20 @@ pub struct Tour {
   tour_duration: i32,
   #[serde(rename = "TourAccessible")]
   tour_accessible: bool,
+  #[serde(rename = "CreatedDate")]
+  created_date: String,
+  #[serde(rename = "LastUpdatedDate")]
+  last_updated_date: String,
+  #[serde(rename = "ATTRIBUTES")]
+  ATTRIBUTES: Vec<::models::Attribute>,
+  #[serde(rename = "ENTITYMEDIA")]
+  ENTITYMEDIA: Vec<::models::Media>,
   #[serde(rename = "MEMBERTOURS")]
   MEMBERTOURS: Vec<::models::TourMembertours>
 }
 
 impl Tour {
-  pub fn new(tour_id: String, facility_id: String, tour_name: String, tour_type: String, tour_description: String, tour_duration: i32, tour_accessible: bool, MEMBERTOURS: Vec<::models::TourMembertours>) -> Tour {
+  pub fn new(tour_id: String, facility_id: String, tour_name: String, tour_type: String, tour_description: String, tour_duration: i32, tour_accessible: bool, created_date: String, last_updated_date: String, ATTRIBUTES: Vec<::models::Attribute>, ENTITYMEDIA: Vec<::models::Media>, MEMBERTOURS: Vec<::models::TourMembertours>) -> Tour {
     Tour {
       tour_id: tour_id,
       facility_id: facility_id,
@@ -42,6 +50,10 @@ impl Tour {
       tour_description: tour_description,
       tour_duration: tour_duration,
       tour_accessible: tour_accessible,
+      created_date: created_date,
+      last_updated_date: last_updated_date,
+      ATTRIBUTES: ATTRIBUTES,
+      ENTITYMEDIA: ENTITYMEDIA,
       MEMBERTOURS: MEMBERTOURS
     }
   }
@@ -141,6 +153,62 @@ impl Tour {
 
   pub fn tour_accessible(&self) -> &bool {
     &self.tour_accessible
+  }
+
+
+  pub fn set_created_date(&mut self, created_date: String) {
+    self.created_date = created_date;
+  }
+
+  pub fn with_created_date(mut self, created_date: String) -> Tour {
+    self.created_date = created_date;
+    self
+  }
+
+  pub fn created_date(&self) -> &String {
+    &self.created_date
+  }
+
+
+  pub fn set_last_updated_date(&mut self, last_updated_date: String) {
+    self.last_updated_date = last_updated_date;
+  }
+
+  pub fn with_last_updated_date(mut self, last_updated_date: String) -> Tour {
+    self.last_updated_date = last_updated_date;
+    self
+  }
+
+  pub fn last_updated_date(&self) -> &String {
+    &self.last_updated_date
+  }
+
+
+  pub fn set_ATTRIBUTES(&mut self, ATTRIBUTES: Vec<::models::Attribute>) {
+    self.ATTRIBUTES = ATTRIBUTES;
+  }
+
+  pub fn with_ATTRIBUTES(mut self, ATTRIBUTES: Vec<::models::Attribute>) -> Tour {
+    self.ATTRIBUTES = ATTRIBUTES;
+    self
+  }
+
+  pub fn ATTRIBUTES(&self) -> &Vec<::models::Attribute> {
+    &self.ATTRIBUTES
+  }
+
+
+  pub fn set_ENTITYMEDIA(&mut self, ENTITYMEDIA: Vec<::models::Media>) {
+    self.ENTITYMEDIA = ENTITYMEDIA;
+  }
+
+  pub fn with_ENTITYMEDIA(mut self, ENTITYMEDIA: Vec<::models::Media>) -> Tour {
+    self.ENTITYMEDIA = ENTITYMEDIA;
+    self
+  }
+
+  pub fn ENTITYMEDIA(&self) -> &Vec<::models::Media> {
+    &self.ENTITYMEDIA
   }
 
 

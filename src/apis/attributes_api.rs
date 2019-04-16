@@ -28,22 +28,25 @@ impl AttributesApiClient {
 }
 
 pub trait AttributesApi {
-    fn get_campsite_attributes(&self, ) -> Result<::models::InlineResponse2009, Error>;
-    fn get_tour_attributes(&self, ) -> Result<(), Error>;
+    fn get_campsite_attributes(&self, campsite_id: &str, limit: i32, offset: i32) -> Result<::models::InlineResponse2009, Error>;
+    fn get_permit_entrance_attributes(&self, permit_entrance_id: &str, limit: i32, offset: i32) -> Result<::models::InlineResponse2009, Error>;
+    fn get_tour_attributes(&self, tour_id: &str, limit: i32, offset: i32) -> Result<::models::InlineResponse2009, Error>;
 }
 
 
 impl AttributesApi for AttributesApiClient {
-    fn get_campsite_attributes(&self, ) -> Result<::models::InlineResponse2009, Error> {
+    fn get_campsite_attributes(&self, campsite_id: &str, limit: i32, offset: i32) -> Result<::models::InlineResponse2009, Error> {
         let configuration: &configuration::Configuration = self.configuration.borrow();
         let client = &configuration.client;
 
         let query_string = {
             let mut query = ::url::form_urlencoded::Serializer::new(String::new());
+            query.append_pair("limit", &limit.to_string());
+            query.append_pair("offset", &offset.to_string());
 
             query.finish()
         };
-        let uri_str = format!("{}/campsites/{campsiteId}/attributes?{}", configuration.base_path, query_string);
+        let uri_str = format!("{}/campsites/{campsiteId}/attributes?{}", configuration.base_path, query_string, campsiteId=campsite_id);
 
         let mut req_builder = client.get(uri_str.as_str());
 
@@ -70,16 +73,18 @@ impl AttributesApi for AttributesApiClient {
         Ok(client.execute(req)?.error_for_status()?.json()?)
     }
 
-    fn get_tour_attributes(&self, ) -> Result<(), Error> {
+    fn get_permit_entrance_attributes(&self, permit_entrance_id: &str, limit: i32, offset: i32) -> Result<::models::InlineResponse2009, Error> {
         let configuration: &configuration::Configuration = self.configuration.borrow();
         let client = &configuration.client;
 
         let query_string = {
             let mut query = ::url::form_urlencoded::Serializer::new(String::new());
+            query.append_pair("limit", &limit.to_string());
+            query.append_pair("offset", &offset.to_string());
 
             query.finish()
         };
-        let uri_str = format!("{}/tours/{tourId}/attributes?{}", configuration.base_path, query_string);
+        let uri_str = format!("{}/permitentrances/{permitEntranceId}/attributes?{}", configuration.base_path, query_string, permitEntranceId=permit_entrance_id);
 
         let mut req_builder = client.get(uri_str.as_str());
 
@@ -103,8 +108,45 @@ impl AttributesApi for AttributesApiClient {
         // send request
         let req = req_builder.build()?;
 
-        client.execute(req)?.error_for_status()?;
-        Ok(())
+        Ok(client.execute(req)?.error_for_status()?.json()?)
+    }
+
+    fn get_tour_attributes(&self, tour_id: &str, limit: i32, offset: i32) -> Result<::models::InlineResponse2009, Error> {
+        let configuration: &configuration::Configuration = self.configuration.borrow();
+        let client = &configuration.client;
+
+        let query_string = {
+            let mut query = ::url::form_urlencoded::Serializer::new(String::new());
+            query.append_pair("limit", &limit.to_string());
+            query.append_pair("offset", &offset.to_string());
+
+            query.finish()
+        };
+        let uri_str = format!("{}/tours/{tourId}/attributes?{}", configuration.base_path, query_string, tourId=tour_id);
+
+        let mut req_builder = client.get(uri_str.as_str());
+
+        if let Some(ref user_agent) = configuration.user_agent {
+            req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+        }
+
+
+        
+        if let Some(ref apikey) = configuration.api_key {
+            let key = apikey.key.clone();
+            let val = match apikey.prefix {
+                Some(ref prefix) => format!("{} {}", prefix, key),
+                None => key,
+            };
+            req_builder = req_builder.header("apikey", val);
+        };
+        
+
+
+        // send request
+        let req = req_builder.build()?;
+
+        Ok(client.execute(req)?.error_for_status()?.json()?)
     }
 
 }

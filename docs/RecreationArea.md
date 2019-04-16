@@ -19,6 +19,9 @@ Name | Type | Description | Notes
 **rec_area_latitude** | **f64** |  | 
 **stay_limit** | **String** |  | 
 **keywords** | **String** |  | 
+**reservable** | **bool** |  | 
+**enabled** | **bool** |  | 
+**last_updated_date** | [***String**](string.md) |  | 
 **ORGANIZATION** | [**Vec<::models::Organization>**](Organization.md) |  | [optional] 
 **FACILITY** | [**Vec<::models::RecreationAreaFacility>**](Recreation Area Facility.md) |  | [optional] 
 **RECAREAADDRESS** | [**Vec<::models::RecreationAreaAddress>**](Recreation Area Address.md) |  | [optional] 

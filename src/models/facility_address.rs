@@ -33,11 +33,13 @@ pub struct FacilityAddress {
   #[serde(rename = "AddressStateCode")]
   address_state_code: String,
   #[serde(rename = "AddressCountryCode")]
-  address_country_code: String
+  address_country_code: String,
+  #[serde(rename = "LastUpdatedDate")]
+  last_updated_date: String
 }
 
 impl FacilityAddress {
-  pub fn new(facility_address_id: String, facility_id: String, facility_address_type: String, facility_street_address1: String, facility_street_address2: String, facility_street_address3: String, city: String, postal_code: String, address_state_code: String, address_country_code: String) -> FacilityAddress {
+  pub fn new(facility_address_id: String, facility_id: String, facility_address_type: String, facility_street_address1: String, facility_street_address2: String, facility_street_address3: String, city: String, postal_code: String, address_state_code: String, address_country_code: String, last_updated_date: String) -> FacilityAddress {
     FacilityAddress {
       facility_address_id: facility_address_id,
       facility_id: facility_id,
@@ -48,7 +50,8 @@ impl FacilityAddress {
       city: city,
       postal_code: postal_code,
       address_state_code: address_state_code,
-      address_country_code: address_country_code
+      address_country_code: address_country_code,
+      last_updated_date: last_updated_date
     }
   }
 
@@ -189,6 +192,20 @@ impl FacilityAddress {
 
   pub fn address_country_code(&self) -> &String {
     &self.address_country_code
+  }
+
+
+  pub fn set_last_updated_date(&mut self, last_updated_date: String) {
+    self.last_updated_date = last_updated_date;
+  }
+
+  pub fn with_last_updated_date(mut self, last_updated_date: String) -> FacilityAddress {
+    self.last_updated_date = last_updated_date;
+    self
+  }
+
+  pub fn last_updated_date(&self) -> &String {
+    &self.last_updated_date
   }
 
 

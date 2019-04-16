@@ -46,6 +46,12 @@ pub struct RecreationArea {
   stay_limit: String,
   #[serde(rename = "Keywords")]
   keywords: String,
+  #[serde(rename = "Reservable")]
+  reservable: bool,
+  #[serde(rename = "Enabled")]
+  enabled: bool,
+  #[serde(rename = "LastUpdatedDate")]
+  last_updated_date: String,
   #[serde(rename = "ORGANIZATION")]
   ORGANIZATION: Option<Vec<::models::Organization>>,
   #[serde(rename = "FACILITY")]
@@ -63,7 +69,7 @@ pub struct RecreationArea {
 }
 
 impl RecreationArea {
-  pub fn new(rec_area_id: String, org_rec_area_id: String, rec_area_name: String, rec_area_description: String, rec_area_fee_description: String, rec_area_directions: String, rec_area_phone: String, rec_area_email: String, rec_area_reservation_url: String, rec_area_map_url: String, GEOJSON: Value, rec_area_longitude: f64, rec_area_latitude: f64, stay_limit: String, keywords: String) -> RecreationArea {
+  pub fn new(rec_area_id: String, org_rec_area_id: String, rec_area_name: String, rec_area_description: String, rec_area_fee_description: String, rec_area_directions: String, rec_area_phone: String, rec_area_email: String, rec_area_reservation_url: String, rec_area_map_url: String, GEOJSON: Value, rec_area_longitude: f64, rec_area_latitude: f64, stay_limit: String, keywords: String, reservable: bool, enabled: bool, last_updated_date: String) -> RecreationArea {
     RecreationArea {
       rec_area_id: rec_area_id,
       org_rec_area_id: org_rec_area_id,
@@ -81,6 +87,9 @@ impl RecreationArea {
       rec_area_latitude: rec_area_latitude,
       stay_limit: stay_limit,
       keywords: keywords,
+      reservable: reservable,
+      enabled: enabled,
+      last_updated_date: last_updated_date,
       ORGANIZATION: None,
       FACILITY: None,
       RECAREAADDRESS: None,
@@ -315,6 +324,48 @@ impl RecreationArea {
 
   pub fn keywords(&self) -> &String {
     &self.keywords
+  }
+
+
+  pub fn set_reservable(&mut self, reservable: bool) {
+    self.reservable = reservable;
+  }
+
+  pub fn with_reservable(mut self, reservable: bool) -> RecreationArea {
+    self.reservable = reservable;
+    self
+  }
+
+  pub fn reservable(&self) -> &bool {
+    &self.reservable
+  }
+
+
+  pub fn set_enabled(&mut self, enabled: bool) {
+    self.enabled = enabled;
+  }
+
+  pub fn with_enabled(mut self, enabled: bool) -> RecreationArea {
+    self.enabled = enabled;
+    self
+  }
+
+  pub fn enabled(&self) -> &bool {
+    &self.enabled
+  }
+
+
+  pub fn set_last_updated_date(&mut self, last_updated_date: String) {
+    self.last_updated_date = last_updated_date;
+  }
+
+  pub fn with_last_updated_date(mut self, last_updated_date: String) -> RecreationArea {
+    self.last_updated_date = last_updated_date;
+    self
+  }
+
+  pub fn last_updated_date(&self) -> &String {
+    &self.last_updated_date
   }
 
 

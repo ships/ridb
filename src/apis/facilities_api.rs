@@ -28,19 +28,32 @@ impl FacilitiesApiClient {
 }
 
 pub trait FacilitiesApi {
-    fn get_facilities(&self, ) -> Result<::models::InlineResponse2002, Error>;
-    fn get_organization_facilities(&self, ) -> Result<(), Error>;
-    fn get_rec_area_facilities(&self, ) -> Result<(), Error>;
+    fn get_facilities(&self, limit: i32, offset: i32, full: &str, state: Vec<String>, latitude: f64, longitude: f64, radius: f64, activity: Vec<String>, lastupdated: &str, sort: &str) -> Result<::models::InlineResponse2002, Error>;
+    fn get_facility(&self, facility_id: &str, full: &str) -> Result<::models::Facility, Error>;
+    fn get_organization_facilities(&self, org_id: &str, limit: i32, offset: i32, full: &str, state: Vec<String>, activity: Vec<String>, lastupdated: &str, sort: &str) -> Result<::models::InlineResponse2002, Error>;
+    fn get_organization_facility(&self, org_id: &str, facility_id: &str, full: &str) -> Result<::models::Facility, Error>;
+    fn get_rec_area_facilities(&self, rec_area_id: &str, limit: i32, offset: i32, full: &str, state: Vec<String>, activity: Vec<String>, lastupdated: &str, sort: &str) -> Result<::models::InlineResponse2002, Error>;
+    fn get_rec_area_facility(&self, rec_area_id: &str, facility_id: &str, full: &str) -> Result<::models::Facility, Error>;
 }
 
 
 impl FacilitiesApi for FacilitiesApiClient {
-    fn get_facilities(&self, ) -> Result<::models::InlineResponse2002, Error> {
+    fn get_facilities(&self, limit: i32, offset: i32, full: &str, state: Vec<String>, latitude: f64, longitude: f64, radius: f64, activity: Vec<String>, lastupdated: &str, sort: &str) -> Result<::models::InlineResponse2002, Error> {
         let configuration: &configuration::Configuration = self.configuration.borrow();
         let client = &configuration.client;
 
         let query_string = {
             let mut query = ::url::form_urlencoded::Serializer::new(String::new());
+            query.append_pair("limit", &limit.to_string());
+            query.append_pair("offset", &offset.to_string());
+            query.append_pair("full", &full.to_string());
+            query.append_pair("state", &state.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string());
+            query.append_pair("latitude", &latitude.to_string());
+            query.append_pair("longitude", &longitude.to_string());
+            query.append_pair("radius", &radius.to_string());
+            query.append_pair("activity", &activity.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string());
+            query.append_pair("lastupdated", &lastupdated.to_string());
+            query.append_pair("sort", &sort.to_string());
 
             query.finish()
         };
@@ -71,16 +84,17 @@ impl FacilitiesApi for FacilitiesApiClient {
         Ok(client.execute(req)?.error_for_status()?.json()?)
     }
 
-    fn get_organization_facilities(&self, ) -> Result<(), Error> {
+    fn get_facility(&self, facility_id: &str, full: &str) -> Result<::models::Facility, Error> {
         let configuration: &configuration::Configuration = self.configuration.borrow();
         let client = &configuration.client;
 
         let query_string = {
             let mut query = ::url::form_urlencoded::Serializer::new(String::new());
+            query.append_pair("full", &full.to_string());
 
             query.finish()
         };
-        let uri_str = format!("{}/organizations/{orgId}/facilities?{}", configuration.base_path, query_string);
+        let uri_str = format!("{}/facilities/{facilityId}?{}", configuration.base_path, query_string, facilityId=facility_id);
 
         let mut req_builder = client.get(uri_str.as_str());
 
@@ -104,20 +118,26 @@ impl FacilitiesApi for FacilitiesApiClient {
         // send request
         let req = req_builder.build()?;
 
-        client.execute(req)?.error_for_status()?;
-        Ok(())
+        Ok(client.execute(req)?.error_for_status()?.json()?)
     }
 
-    fn get_rec_area_facilities(&self, ) -> Result<(), Error> {
+    fn get_organization_facilities(&self, org_id: &str, limit: i32, offset: i32, full: &str, state: Vec<String>, activity: Vec<String>, lastupdated: &str, sort: &str) -> Result<::models::InlineResponse2002, Error> {
         let configuration: &configuration::Configuration = self.configuration.borrow();
         let client = &configuration.client;
 
         let query_string = {
             let mut query = ::url::form_urlencoded::Serializer::new(String::new());
+            query.append_pair("limit", &limit.to_string());
+            query.append_pair("offset", &offset.to_string());
+            query.append_pair("full", &full.to_string());
+            query.append_pair("state", &state.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string());
+            query.append_pair("activity", &activity.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string());
+            query.append_pair("lastupdated", &lastupdated.to_string());
+            query.append_pair("sort", &sort.to_string());
 
             query.finish()
         };
-        let uri_str = format!("{}/recareas/{recAreaId}/facilities?{}", configuration.base_path, query_string);
+        let uri_str = format!("{}/organizations/{orgId}/facilities?{}", configuration.base_path, query_string, orgId=org_id);
 
         let mut req_builder = client.get(uri_str.as_str());
 
@@ -141,8 +161,124 @@ impl FacilitiesApi for FacilitiesApiClient {
         // send request
         let req = req_builder.build()?;
 
-        client.execute(req)?.error_for_status()?;
-        Ok(())
+        Ok(client.execute(req)?.error_for_status()?.json()?)
+    }
+
+    fn get_organization_facility(&self, org_id: &str, facility_id: &str, full: &str) -> Result<::models::Facility, Error> {
+        let configuration: &configuration::Configuration = self.configuration.borrow();
+        let client = &configuration.client;
+
+        let query_string = {
+            let mut query = ::url::form_urlencoded::Serializer::new(String::new());
+            query.append_pair("full", &full.to_string());
+
+            query.finish()
+        };
+        let uri_str = format!("{}/organizations/{orgId}/facilities/{facilityId}?{}", configuration.base_path, query_string, orgId=org_id, facilityId=facility_id);
+
+        let mut req_builder = client.get(uri_str.as_str());
+
+        if let Some(ref user_agent) = configuration.user_agent {
+            req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+        }
+
+
+        
+        if let Some(ref apikey) = configuration.api_key {
+            let key = apikey.key.clone();
+            let val = match apikey.prefix {
+                Some(ref prefix) => format!("{} {}", prefix, key),
+                None => key,
+            };
+            req_builder = req_builder.header("apikey", val);
+        };
+        
+
+
+        // send request
+        let req = req_builder.build()?;
+
+        Ok(client.execute(req)?.error_for_status()?.json()?)
+    }
+
+    fn get_rec_area_facilities(&self, rec_area_id: &str, limit: i32, offset: i32, full: &str, state: Vec<String>, activity: Vec<String>, lastupdated: &str, sort: &str) -> Result<::models::InlineResponse2002, Error> {
+        let configuration: &configuration::Configuration = self.configuration.borrow();
+        let client = &configuration.client;
+
+        let query_string = {
+            let mut query = ::url::form_urlencoded::Serializer::new(String::new());
+            query.append_pair("limit", &limit.to_string());
+            query.append_pair("offset", &offset.to_string());
+            query.append_pair("full", &full.to_string());
+            query.append_pair("state", &state.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string());
+            query.append_pair("activity", &activity.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string());
+            query.append_pair("lastupdated", &lastupdated.to_string());
+            query.append_pair("sort", &sort.to_string());
+
+            query.finish()
+        };
+        let uri_str = format!("{}/recareas/{recAreaId}/facilities?{}", configuration.base_path, query_string, recAreaId=rec_area_id);
+
+        let mut req_builder = client.get(uri_str.as_str());
+
+        if let Some(ref user_agent) = configuration.user_agent {
+            req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+        }
+
+
+        
+        if let Some(ref apikey) = configuration.api_key {
+            let key = apikey.key.clone();
+            let val = match apikey.prefix {
+                Some(ref prefix) => format!("{} {}", prefix, key),
+                None => key,
+            };
+            req_builder = req_builder.header("apikey", val);
+        };
+        
+
+
+        // send request
+        let req = req_builder.build()?;
+
+        Ok(client.execute(req)?.error_for_status()?.json()?)
+    }
+
+    fn get_rec_area_facility(&self, rec_area_id: &str, facility_id: &str, full: &str) -> Result<::models::Facility, Error> {
+        let configuration: &configuration::Configuration = self.configuration.borrow();
+        let client = &configuration.client;
+
+        let query_string = {
+            let mut query = ::url::form_urlencoded::Serializer::new(String::new());
+            query.append_pair("full", &full.to_string());
+
+            query.finish()
+        };
+        let uri_str = format!("{}/recareas/{recAreaId}/facilities/{facilityId}?{}", configuration.base_path, query_string, recAreaId=rec_area_id, facilityId=facility_id);
+
+        let mut req_builder = client.get(uri_str.as_str());
+
+        if let Some(ref user_agent) = configuration.user_agent {
+            req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+        }
+
+
+        
+        if let Some(ref apikey) = configuration.api_key {
+            let key = apikey.key.clone();
+            let val = match apikey.prefix {
+                Some(ref prefix) => format!("{} {}", prefix, key),
+                None => key,
+            };
+            req_builder = req_builder.header("apikey", val);
+        };
+        
+
+
+        // send request
+        let req = req_builder.build()?;
+
+        Ok(client.execute(req)?.error_for_status()?.json()?)
     }
 
 }

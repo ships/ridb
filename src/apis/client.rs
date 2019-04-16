@@ -7,7 +7,6 @@ pub struct APIClient {
   activities_api: Box<::apis::ActivitiesApi>,
   attributes_api: Box<::apis::AttributesApi>,
   campsites_api: Box<::apis::CampsitesApi>,
-  default_api: Box<::apis::DefaultApi>,
   events_api: Box<::apis::EventsApi>,
   facilities_api: Box<::apis::FacilitiesApi>,
   facility_addresses_api: Box<::apis::FacilityAddressesApi>,
@@ -30,7 +29,6 @@ impl APIClient {
       activities_api: Box::new(::apis::ActivitiesApiClient::new(rc.clone())),
       attributes_api: Box::new(::apis::AttributesApiClient::new(rc.clone())),
       campsites_api: Box::new(::apis::CampsitesApiClient::new(rc.clone())),
-      default_api: Box::new(::apis::DefaultApiClient::new(rc.clone())),
       events_api: Box::new(::apis::EventsApiClient::new(rc.clone())),
       facilities_api: Box::new(::apis::FacilitiesApiClient::new(rc.clone())),
       facility_addresses_api: Box::new(::apis::FacilityAddressesApiClient::new(rc.clone())),
@@ -55,10 +53,6 @@ impl APIClient {
 
   pub fn campsites_api(&self) -> &::apis::CampsitesApi{
     self.campsites_api.as_ref()
-  }
-
-  pub fn default_api(&self) -> &::apis::DefaultApi{
-    self.default_api.as_ref()
   }
 
   pub fn events_api(&self) -> &::apis::EventsApi{

@@ -28,12 +28,15 @@ impl CampsitesApiClient {
 }
 
 pub trait CampsitesApi {
-    fn get_campsites(&self, ) -> Result<::models::InlineResponse2005, Error>;
+    fn get_campsite(&self, campsite_id: &str) -> Result<::models::Campsite, Error>;
+    fn get_campsites(&self, limit: i32, offset: i32) -> Result<::models::InlineResponse2005, Error>;
+    fn get_facility_campsite(&self, facility_id: &str, campsite_id: &str) -> Result<::models::Campsite, Error>;
+    fn get_facility_campsites(&self, facility_id: &str, limit: i32, offset: i32) -> Result<::models::InlineResponse2005, Error>;
 }
 
 
 impl CampsitesApi for CampsitesApiClient {
-    fn get_campsites(&self, ) -> Result<::models::InlineResponse2005, Error> {
+    fn get_campsite(&self, campsite_id: &str) -> Result<::models::Campsite, Error> {
         let configuration: &configuration::Configuration = self.configuration.borrow();
         let client = &configuration.client;
 
@@ -42,7 +45,119 @@ impl CampsitesApi for CampsitesApiClient {
 
             query.finish()
         };
+        let uri_str = format!("{}/campsites/{campsiteId}?{}", configuration.base_path, query_string, campsiteId=campsite_id);
+
+        let mut req_builder = client.get(uri_str.as_str());
+
+        if let Some(ref user_agent) = configuration.user_agent {
+            req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+        }
+
+
+        
+        if let Some(ref apikey) = configuration.api_key {
+            let key = apikey.key.clone();
+            let val = match apikey.prefix {
+                Some(ref prefix) => format!("{} {}", prefix, key),
+                None => key,
+            };
+            req_builder = req_builder.header("apikey", val);
+        };
+        
+
+
+        // send request
+        let req = req_builder.build()?;
+
+        Ok(client.execute(req)?.error_for_status()?.json()?)
+    }
+
+    fn get_campsites(&self, limit: i32, offset: i32) -> Result<::models::InlineResponse2005, Error> {
+        let configuration: &configuration::Configuration = self.configuration.borrow();
+        let client = &configuration.client;
+
+        let query_string = {
+            let mut query = ::url::form_urlencoded::Serializer::new(String::new());
+            query.append_pair("limit", &limit.to_string());
+            query.append_pair("offset", &offset.to_string());
+
+            query.finish()
+        };
         let uri_str = format!("{}/campsites?{}", configuration.base_path, query_string);
+
+        let mut req_builder = client.get(uri_str.as_str());
+
+        if let Some(ref user_agent) = configuration.user_agent {
+            req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+        }
+
+
+        
+        if let Some(ref apikey) = configuration.api_key {
+            let key = apikey.key.clone();
+            let val = match apikey.prefix {
+                Some(ref prefix) => format!("{} {}", prefix, key),
+                None => key,
+            };
+            req_builder = req_builder.header("apikey", val);
+        };
+        
+
+
+        // send request
+        let req = req_builder.build()?;
+
+        Ok(client.execute(req)?.error_for_status()?.json()?)
+    }
+
+    fn get_facility_campsite(&self, facility_id: &str, campsite_id: &str) -> Result<::models::Campsite, Error> {
+        let configuration: &configuration::Configuration = self.configuration.borrow();
+        let client = &configuration.client;
+
+        let query_string = {
+            let mut query = ::url::form_urlencoded::Serializer::new(String::new());
+
+            query.finish()
+        };
+        let uri_str = format!("{}/facilities/{facilityId}/campsites/{campsiteId}?{}", configuration.base_path, query_string, facilityId=facility_id, campsiteId=campsite_id);
+
+        let mut req_builder = client.get(uri_str.as_str());
+
+        if let Some(ref user_agent) = configuration.user_agent {
+            req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+        }
+
+
+        
+        if let Some(ref apikey) = configuration.api_key {
+            let key = apikey.key.clone();
+            let val = match apikey.prefix {
+                Some(ref prefix) => format!("{} {}", prefix, key),
+                None => key,
+            };
+            req_builder = req_builder.header("apikey", val);
+        };
+        
+
+
+        // send request
+        let req = req_builder.build()?;
+
+        Ok(client.execute(req)?.error_for_status()?.json()?)
+    }
+
+    fn get_facility_campsites(&self, facility_id: &str, limit: i32, offset: i32) -> Result<::models::InlineResponse2005, Error> {
+        let configuration: &configuration::Configuration = self.configuration.borrow();
+        let client = &configuration.client;
+
+        let query_string = {
+            let mut query = ::url::form_urlencoded::Serializer::new(String::new());
+            query.append_pair("limit", &limit.to_string());
+            query.append_pair("offset", &offset.to_string());
+
+            query.finish()
+        };
+        let uri_str = format!("{}/facilities/{facilityId}/campsites?{}", configuration.base_path, query_string, facilityId=facility_id);
 
         let mut req_builder = client.get(uri_str.as_str());
 

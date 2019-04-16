@@ -32,12 +32,22 @@ pub struct PermitEntrance {
   longitude: f64,
   #[serde(rename = "Latitude")]
   latitude: f64,
+  #[serde(rename = "GEOSJON")]
+  GEOSJON: Option<::models::FacilityGeojson>,
+  #[serde(rename = "CreatedDate")]
+  created_date: String,
+  #[serde(rename = "LastUpdatedDate")]
+  last_updated_date: String,
+  #[serde(rename = "ATTRIBUTES")]
+  ATTRIBUTES: Vec<::models::Attribute>,
+  #[serde(rename = "ENTITYMEDIA")]
+  ENTITYMEDIA: Vec<::models::Media>,
   #[serde(rename = "ZONES")]
   ZONES: Vec<::models::Zone>
 }
 
 impl PermitEntrance {
-  pub fn new(permit_entrance_id: String, facility_id: String, permit_entrance_name: String, permit_entrance_description: String, district: String, town: String, permit_entrance_accessible: bool, longitude: f64, latitude: f64, ZONES: Vec<::models::Zone>) -> PermitEntrance {
+  pub fn new(permit_entrance_id: String, facility_id: String, permit_entrance_name: String, permit_entrance_description: String, district: String, town: String, permit_entrance_accessible: bool, longitude: f64, latitude: f64, created_date: String, last_updated_date: String, ATTRIBUTES: Vec<::models::Attribute>, ENTITYMEDIA: Vec<::models::Media>, ZONES: Vec<::models::Zone>) -> PermitEntrance {
     PermitEntrance {
       permit_entrance_id: permit_entrance_id,
       facility_id: facility_id,
@@ -48,6 +58,11 @@ impl PermitEntrance {
       permit_entrance_accessible: permit_entrance_accessible,
       longitude: longitude,
       latitude: latitude,
+      GEOSJON: None,
+      created_date: created_date,
+      last_updated_date: last_updated_date,
+      ATTRIBUTES: ATTRIBUTES,
+      ENTITYMEDIA: ENTITYMEDIA,
       ZONES: ZONES
     }
   }
@@ -175,6 +190,79 @@ impl PermitEntrance {
 
   pub fn latitude(&self) -> &f64 {
     &self.latitude
+  }
+
+
+  pub fn set_GEOSJON(&mut self, GEOSJON: ::models::FacilityGeojson) {
+    self.GEOSJON = Some(GEOSJON);
+  }
+
+  pub fn with_GEOSJON(mut self, GEOSJON: ::models::FacilityGeojson) -> PermitEntrance {
+    self.GEOSJON = Some(GEOSJON);
+    self
+  }
+
+  pub fn GEOSJON(&self) -> Option<&::models::FacilityGeojson> {
+    self.GEOSJON.as_ref()
+  }
+
+  pub fn reset_GEOSJON(&mut self) {
+    self.GEOSJON = None;
+  }
+
+  pub fn set_created_date(&mut self, created_date: String) {
+    self.created_date = created_date;
+  }
+
+  pub fn with_created_date(mut self, created_date: String) -> PermitEntrance {
+    self.created_date = created_date;
+    self
+  }
+
+  pub fn created_date(&self) -> &String {
+    &self.created_date
+  }
+
+
+  pub fn set_last_updated_date(&mut self, last_updated_date: String) {
+    self.last_updated_date = last_updated_date;
+  }
+
+  pub fn with_last_updated_date(mut self, last_updated_date: String) -> PermitEntrance {
+    self.last_updated_date = last_updated_date;
+    self
+  }
+
+  pub fn last_updated_date(&self) -> &String {
+    &self.last_updated_date
+  }
+
+
+  pub fn set_ATTRIBUTES(&mut self, ATTRIBUTES: Vec<::models::Attribute>) {
+    self.ATTRIBUTES = ATTRIBUTES;
+  }
+
+  pub fn with_ATTRIBUTES(mut self, ATTRIBUTES: Vec<::models::Attribute>) -> PermitEntrance {
+    self.ATTRIBUTES = ATTRIBUTES;
+    self
+  }
+
+  pub fn ATTRIBUTES(&self) -> &Vec<::models::Attribute> {
+    &self.ATTRIBUTES
+  }
+
+
+  pub fn set_ENTITYMEDIA(&mut self, ENTITYMEDIA: Vec<::models::Media>) {
+    self.ENTITYMEDIA = ENTITYMEDIA;
+  }
+
+  pub fn with_ENTITYMEDIA(mut self, ENTITYMEDIA: Vec<::models::Media>) -> PermitEntrance {
+    self.ENTITYMEDIA = ENTITYMEDIA;
+    self
+  }
+
+  pub fn ENTITYMEDIA(&self) -> &Vec<::models::Media> {
+    &self.ENTITYMEDIA
   }
 
 

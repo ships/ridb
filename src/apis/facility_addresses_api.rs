@@ -28,12 +28,15 @@ impl FacilityAddressesApiClient {
 }
 
 pub trait FacilityAddressesApi {
-    fn get_facility_addresses(&self, ) -> Result<::models::InlineResponse2004, Error>;
+    fn get_facility_address(&self, facility_address_id: &str) -> Result<::models::FacilityAddress, Error>;
+    fn get_facility_addresses(&self, limit: i32, offset: i32) -> Result<::models::InlineResponse2004, Error>;
+    fn get_facility_facility_address(&self, facility_id: &str, facility_address_id: &str) -> Result<::models::FacilityAddress, Error>;
+    fn get_facility_facility_addresses(&self, facility_id: &str, limit: i32, offset: i32) -> Result<::models::InlineResponse2004, Error>;
 }
 
 
 impl FacilityAddressesApi for FacilityAddressesApiClient {
-    fn get_facility_addresses(&self, ) -> Result<::models::InlineResponse2004, Error> {
+    fn get_facility_address(&self, facility_address_id: &str) -> Result<::models::FacilityAddress, Error> {
         let configuration: &configuration::Configuration = self.configuration.borrow();
         let client = &configuration.client;
 
@@ -42,7 +45,119 @@ impl FacilityAddressesApi for FacilityAddressesApiClient {
 
             query.finish()
         };
+        let uri_str = format!("{}/facilityaddresses/{facilityAddressId}?{}", configuration.base_path, query_string, facilityAddressId=facility_address_id);
+
+        let mut req_builder = client.get(uri_str.as_str());
+
+        if let Some(ref user_agent) = configuration.user_agent {
+            req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+        }
+
+
+        
+        if let Some(ref apikey) = configuration.api_key {
+            let key = apikey.key.clone();
+            let val = match apikey.prefix {
+                Some(ref prefix) => format!("{} {}", prefix, key),
+                None => key,
+            };
+            req_builder = req_builder.header("apikey", val);
+        };
+        
+
+
+        // send request
+        let req = req_builder.build()?;
+
+        Ok(client.execute(req)?.error_for_status()?.json()?)
+    }
+
+    fn get_facility_addresses(&self, limit: i32, offset: i32) -> Result<::models::InlineResponse2004, Error> {
+        let configuration: &configuration::Configuration = self.configuration.borrow();
+        let client = &configuration.client;
+
+        let query_string = {
+            let mut query = ::url::form_urlencoded::Serializer::new(String::new());
+            query.append_pair("limit", &limit.to_string());
+            query.append_pair("offset", &offset.to_string());
+
+            query.finish()
+        };
         let uri_str = format!("{}/facilityaddresses?{}", configuration.base_path, query_string);
+
+        let mut req_builder = client.get(uri_str.as_str());
+
+        if let Some(ref user_agent) = configuration.user_agent {
+            req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+        }
+
+
+        
+        if let Some(ref apikey) = configuration.api_key {
+            let key = apikey.key.clone();
+            let val = match apikey.prefix {
+                Some(ref prefix) => format!("{} {}", prefix, key),
+                None => key,
+            };
+            req_builder = req_builder.header("apikey", val);
+        };
+        
+
+
+        // send request
+        let req = req_builder.build()?;
+
+        Ok(client.execute(req)?.error_for_status()?.json()?)
+    }
+
+    fn get_facility_facility_address(&self, facility_id: &str, facility_address_id: &str) -> Result<::models::FacilityAddress, Error> {
+        let configuration: &configuration::Configuration = self.configuration.borrow();
+        let client = &configuration.client;
+
+        let query_string = {
+            let mut query = ::url::form_urlencoded::Serializer::new(String::new());
+
+            query.finish()
+        };
+        let uri_str = format!("{}/facilities/{facilityId}/facilityaddresses/{facilityAddressId}?{}", configuration.base_path, query_string, facilityId=facility_id, facilityAddressId=facility_address_id);
+
+        let mut req_builder = client.get(uri_str.as_str());
+
+        if let Some(ref user_agent) = configuration.user_agent {
+            req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+        }
+
+
+        
+        if let Some(ref apikey) = configuration.api_key {
+            let key = apikey.key.clone();
+            let val = match apikey.prefix {
+                Some(ref prefix) => format!("{} {}", prefix, key),
+                None => key,
+            };
+            req_builder = req_builder.header("apikey", val);
+        };
+        
+
+
+        // send request
+        let req = req_builder.build()?;
+
+        Ok(client.execute(req)?.error_for_status()?.json()?)
+    }
+
+    fn get_facility_facility_addresses(&self, facility_id: &str, limit: i32, offset: i32) -> Result<::models::InlineResponse2004, Error> {
+        let configuration: &configuration::Configuration = self.configuration.borrow();
+        let client = &configuration.client;
+
+        let query_string = {
+            let mut query = ::url::form_urlencoded::Serializer::new(String::new());
+            query.append_pair("limit", &limit.to_string());
+            query.append_pair("offset", &offset.to_string());
+
+            query.finish()
+        };
+        let uri_str = format!("{}/facilities/{facilityId}/facilityaddresses?{}", configuration.base_path, query_string, facilityId=facility_id);
 
         let mut req_builder = client.get(uri_str.as_str());
 

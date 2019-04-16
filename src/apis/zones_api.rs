@@ -28,13 +28,13 @@ impl ZonesApiClient {
 }
 
 pub trait ZonesApi {
-    fn get_permit_entrance_zone(&self, zone_id: &str) -> Result<::models::Zone, Error>;
-    fn get_permit_entrance_zones(&self, ) -> Result<::models::InlineResponse20010, Error>;
+    fn get_permit_entrance_zone(&self, permit_entrance_id: &str, zone_id: &str) -> Result<::models::Zone, Error>;
+    fn get_permit_entrance_zones(&self, permit_entrance_id: &str) -> Result<::models::InlineResponse20010, Error>;
 }
 
 
 impl ZonesApi for ZonesApiClient {
-    fn get_permit_entrance_zone(&self, zone_id: &str) -> Result<::models::Zone, Error> {
+    fn get_permit_entrance_zone(&self, permit_entrance_id: &str, zone_id: &str) -> Result<::models::Zone, Error> {
         let configuration: &configuration::Configuration = self.configuration.borrow();
         let client = &configuration.client;
 
@@ -43,7 +43,7 @@ impl ZonesApi for ZonesApiClient {
 
             query.finish()
         };
-        let uri_str = format!("{}/permitentrances/{permitEntranceId}/zones/{zoneId}?{}", configuration.base_path, query_string, zoneId=zone_id);
+        let uri_str = format!("{}/permitentrances/{permitEntranceId}/zones/{zoneId}?{}", configuration.base_path, query_string, permitEntranceId=permit_entrance_id, zoneId=zone_id);
 
         let mut req_builder = client.get(uri_str.as_str());
 
@@ -70,7 +70,7 @@ impl ZonesApi for ZonesApiClient {
         Ok(client.execute(req)?.error_for_status()?.json()?)
     }
 
-    fn get_permit_entrance_zones(&self, ) -> Result<::models::InlineResponse20010, Error> {
+    fn get_permit_entrance_zones(&self, permit_entrance_id: &str) -> Result<::models::InlineResponse20010, Error> {
         let configuration: &configuration::Configuration = self.configuration.borrow();
         let client = &configuration.client;
 
@@ -79,7 +79,7 @@ impl ZonesApi for ZonesApiClient {
 
             query.finish()
         };
-        let uri_str = format!("{}/permitentrances/{permitEntranceId}/zones?{}", configuration.base_path, query_string);
+        let uri_str = format!("{}/permitentrances/{permitEntranceId}/zones?{}", configuration.base_path, query_string, permitEntranceId=permit_entrance_id);
 
         let mut req_builder = client.get(uri_str.as_str());
 

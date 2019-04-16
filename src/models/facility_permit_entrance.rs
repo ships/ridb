@@ -17,14 +17,17 @@ pub struct FacilityPermitEntrance {
   #[serde(rename = "PermitEntranceID")]
   permit_entrance_id: String,
   #[serde(rename = "PermitEntranceName")]
-  permit_entrance_name: String
+  permit_entrance_name: String,
+  #[serde(rename = "ResourceLink")]
+  resource_link: String
 }
 
 impl FacilityPermitEntrance {
-  pub fn new(permit_entrance_id: String, permit_entrance_name: String) -> FacilityPermitEntrance {
+  pub fn new(permit_entrance_id: String, permit_entrance_name: String, resource_link: String) -> FacilityPermitEntrance {
     FacilityPermitEntrance {
       permit_entrance_id: permit_entrance_id,
-      permit_entrance_name: permit_entrance_name
+      permit_entrance_name: permit_entrance_name,
+      resource_link: resource_link
     }
   }
 
@@ -53,6 +56,20 @@ impl FacilityPermitEntrance {
 
   pub fn permit_entrance_name(&self) -> &String {
     &self.permit_entrance_name
+  }
+
+
+  pub fn set_resource_link(&mut self, resource_link: String) {
+    self.resource_link = resource_link;
+  }
+
+  pub fn with_resource_link(mut self, resource_link: String) -> FacilityPermitEntrance {
+    self.resource_link = resource_link;
+    self
+  }
+
+  pub fn resource_link(&self) -> &String {
+    &self.resource_link
   }
 
 
